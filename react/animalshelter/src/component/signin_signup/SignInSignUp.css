@@ -1,0 +1,102 @@
+.signinForm-div{
+    height: 50%;
+    width: 50%;
+    margin: auto;
+    border: 1px solid rgb(126, 126, 179);
+    padding: 20px 30px;
+    box-shadow: 4px 4px 4px greenyellow;
+    border-style: groove;
+    border-radius: 2vh;
+    outline-style: double;
+    outline-color: rgb(235, 172, 91);
+    background-color: rgb(255, 240, 225);
+}
+
+.loginTitle{
+    font-family: 'Times New Roman', Times, serif;
+    padding: 10px;
+    color: rgb(179, 129, 21);
+}
+label{
+    font-size: large;
+    text-decoration: burlywood;
+    font-weight: 500;
+    color: rgb(119, 80, 51);
+    margin: 10px 0px 5px 0px;
+}
+
+.form-control{
+    outline-style: hidden;
+    border: 1.5px solid rgb(131, 131, 182);
+    background-color: rgb(226, 231, 247);
+    padding: 5px 15px;
+    margin: 0px 0px 0px 0px;
+}
+.inputEmail,.form-control:focus-visible{
+    outline: none;
+    outline-offset: 0px;
+    outline-style: 0px;
+}
+.form-check-label {
+    font-weight: 400;
+    font-size: medium;
+    margin: 0px;
+}
+
+#custom-switch {
+    border: 1.5px solid rgb(127, 127, 192);
+    width: 50px;
+    height: 25.5px;
+}
+.login-btn{
+    line-height: 18px;
+    letter-spacing: 3px;
+}
+.navbtn {
+    color: rgb(60, 75, 206);
+    background-color:white;
+    font-weight: 500;
+    line-height: 18px;
+}
+.navbtn{
+    
+}
+.form-check-input{
+    width: 20px;
+    height: 20px;
+    color: aquamarine;
+    border: 1.5px solid rgb(84, 84, 141);
+}
+.form-select{
+    border: 1.5px solid rgb(91, 91, 143);
+}
+select.form-select option{
+    padding: 10px;
+    text-align: justify;
+    line-height: 18px;
+    color: rgb(24, 78, 24);
+    background-color: rgb(200, 228, 174);
+}
+select.form-select{
+    color: rgb(233, 140, 19);
+}
+select:hover{
+    color: rgb(233, 140, 19);
+}
+select.form-select option:hover{
+    padding: 10px;
+    text-align: justify;
+    line-height: 18px;
+    color: rgb(252, 185, 3);
+    background-color: rgb(200, 228, 174);
+}
+
+ /* .form-selelct:hover{
+    background-color: rgb(248, 242, 230);
+    color: rgb(233, 138, 14);
+    outline-style: none;
+    background-color: rgb(150, 150, 201);
+} */
+a{
+    text-decoration: none;
+}
