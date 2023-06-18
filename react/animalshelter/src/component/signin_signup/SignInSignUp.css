@@ -52,6 +52,10 @@ label{
     line-height: 18px;
     letter-spacing: 3px;
 }
+.cancel-btn{
+    line-height: 18px;
+    letter-spacing: 3px;
+}
 .navbtn {
     color: rgb(60, 75, 206);
     background-color:white;
@@ -59,7 +63,7 @@ label{
     line-height: 18px;
 }
 .navbtn{
-    
+    padding: 0px;
 }
 .form-check-input{
     width: 20px;

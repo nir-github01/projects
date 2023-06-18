@@ -1,7 +1,14 @@
 import Form from 'react-bootstrap/Form';
 import "./SignInSignUp.css";
 import Button from 'react-bootstrap/Button';
+import  {useNavigate, Navigate } from "react-router-dom";
+
 function SignUpForm() {
+
+    const navigate = useNavigate ();
+    const homePage = () => {
+        navigate("/");
+    }
   return (
     <>
     <div className='signinForm-div'>
@@ -146,6 +153,7 @@ function SignUpForm() {
                 <Button variant="success" size="lg" className='login-btn'>
                     SIGNUP
                 </Button>
+                <Button variant='danger' size='lg' className='btn, cancel-btn' onClick={homePage}>CANCEL</Button>
             </div>
         </Form>
       </div>
