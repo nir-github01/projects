@@ -2,15 +2,20 @@ import Form from 'react-bootstrap/Form';
 import "../signin_signup//SignInSignUp.css";
 import Button from 'react-bootstrap/Button';
 import  {useNavigate} from "react-router-dom";
+import { useState } from 'react';
 
 
 function AdoptionForm() {
 
+    //Redirecting page on button click
     const navigate = useNavigate();
 
     const homePage = () => {
         navigate("/");
     }
+  
+    //form data handling
+
 
 
   return (
@@ -26,24 +31,24 @@ function AdoptionForm() {
         <Form.Label htmlFor="inputGender">Pet type</Form.Label>
                 <Form.Select aria-label="select-profession">
                 <option>Choose pet</option>
-                <option value="bussiness">Dog</option>
-                <option value="education">Cat</option>
-                <option value="engineer">1</option>
-                <option value="teacher">2</option>
-                <option value="leader">3</option>
-                <option value="manager">4</option>
+                <option value="dog">Dog</option>
+                <option value="cat">Cat</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
                 </Form.Select>
         </div>
         <div className='select-div mb-5 mt-4'>
         <Form.Label htmlFor="inputGender">Breed</Form.Label>
                 <Form.Select aria-label="select-profession">
                 <option>Choose breed</option>
-                <option value="bussiness">Lab</option>
-                <option value="education">1</option>
-                <option value="engineer">2</option>
-                <option value="teacher">3</option>
-                <option value="leader">4</option>
-                <option value="manager">5</option>
+                <option value="lab">Lab</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
                 </Form.Select>
         </div>
         <div>

@@ -21,11 +21,15 @@ function HomePage() {
     navigate("/signin");
     
   }
+  const adoptFormdata =() =>{
+    navigate("/adoptform");
+  }
     return (
         <>
         <div className="nav-btn-div">
            <Button className="navbtn me-3" onClick={signInForm} >SIGNIN </Button> 
            <Button className="navbtn" onClick={signUpForm}>SIGNUP </Button> 
+           <Button className="btn btn-danger me-4" onClick={adoptFormdata}>ADOPT</Button>
         </div>
         {/* <AdoptionForm />
         <GiveAwayform /> */} 
