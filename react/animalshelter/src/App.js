@@ -8,6 +8,7 @@ import SignUpForm from './component/signin_signup/SignUpPage';
 import AdoptionForm from './component/petapplicationform/Adoptpetform';
 import GiveAwayform from './component/petapplicationform/GiveAwayPetForm';
 import AdoptFormData from './component/petapplicationform/Adopt_classForm';
+import AdoptPetList from './component/petapplicationform/AdoptPetList';
 
 
 function App() {
@@ -20,7 +21,9 @@ function App() {
            <Route exact path='/signup' element={<SignUpForm />}></Route>
            <Route exact path='/adopt' element={<AdoptionForm/>}></Route>
            <Route exact path='/giveaway' element={<GiveAwayform/>}></Route>
-           <Route exact path='/adoptform' element={<AdoptFormData/>}></Route>
+           <Route exact path='/adoterlist' element={<AdoptPetList />}></Route>
+
+           {/* <Route exact path='/adoptform' element={<AdoptFormData/>}></Route> */}
          </Routes>
     </div>
   );
