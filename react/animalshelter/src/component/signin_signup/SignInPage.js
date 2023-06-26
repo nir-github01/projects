@@ -2,10 +2,13 @@ import Form from 'react-bootstrap/Form';
 import "./SignInSignUp.css";
 import Button from 'react-bootstrap/Button';
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router';
 function SignInForm() {
+     const navigate = useNavigate();
 
     const [usersdata, setUsersData] = useState();
     const [userIpt, setUserIpt] = useState();
+    const [error, setError] = useState();
 
 
     useEffect(() =>{
@@ -28,6 +31,7 @@ function SignInForm() {
     }
 
     let handleUserLogin =async (e) => {
+        let errMessage ="Invalid email or Password";
             e.preventDefault();
             console.log(userIpt != undefined);
             if( userIpt != null && userIpt != undefined){  
@@ -35,7 +39,9 @@ function SignInForm() {
                 
                     // console.log("Condition 1"+ idx+ user.Email === userIpt.Email && user.Pasword === userIpt.Password);
                     if(user.Email === userIpt.Email && user.Pasword === userIpt.Password){
-                        console.log("Login Successfully");
+                      navigate("/");
+                    }else{
+                        setError(errMessage);
                     }
             })
         }  
@@ -46,7 +52,9 @@ function SignInForm() {
     <>
     <div className='signinForm-div'>
     <h4 className='loginTitle'>LOGIN FORM</h4>
+    <p>{error}</p>
         <Form  onClick={handleUserLogin}>
+
             <Form.Label htmlFor="inputEmail">Email</Form.Label>
             <Form.Control
                 type="email"
