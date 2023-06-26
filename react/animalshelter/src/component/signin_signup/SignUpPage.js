@@ -1,7 +1,10 @@
 import Form from 'react-bootstrap/Form';
 import "./SignInSignUp.css";
 import Button from 'react-bootstrap/Button';
-import  {useNavigate, Navigate } from "react-router-dom";
+import  {useNavigate } from "react-router-dom";
+import { useState } from 'react';
+import {citysList} from "./locationdatalist/CityList";
+import { genderList } from './gender/Genderfile';
 
 function SignUpForm() {
 
@@ -9,15 +12,95 @@ function SignUpForm() {
     const homePage = () => {
         navigate("/");
     }
+
+    const [userform, setUserForm] = useState();
+
+    const [cityname, setCityName] = useState([]);
+    const [genders, setGender] = useState();
+
+    const [mergeform, setMergeForm] = useState({});
+    // const [citys, setCitys] = useState([citysList]);
+    let handleUserInput =(e) =>{
+        setUserForm({
+            ...userform,
+            [e.target.name] :e.target.value,
+            
+        });
+   
+    }
+
+    let handleCheckbox = (e) => {
+
+        let isChecked = e.target.checked;
+        let checkedValue = e.target.value;
+        console.log({[e.target.name]: [...cityname, checkedValue]})
+        if(isChecked){
+            setCityName((prevData)=>  [...cityname, checkedValue]);
+        }else{
+         setCityName((prevData)=>{
+            return prevData.filter((val) =>{
+                 return val !==checkedValue
+             } )
+         })
+            
+        }
+    }
+    const handleRadio = (e) => {
+        let isSelected = e.target.checked;
+        let radioValue = e.target.value;
+
+        console.log("Before"+isSelected, radioValue, genders)
+
+        setGender({
+            genders:e.target.value
+        });
+
+        console.log("After"+isSelected, radioValue, genders)
+        // if(isSelected){
+        //     setGender(radioValue);
+        // }else{
+        //     setGender((prevData) => {
+        //         return prevData.filter((val) => {
+        //             return val !== radioValue;
+        //         })
+        //     })
+        // }
+    }
+    let handleSubmitForm = async(e)=>{
+        e.preventDefault();
+         //mergeform = new Array( JSON.stringify(userform),JSON.stringify(genders), "City:"+cityname);
+        setMergeForm((prevData) => {
+            return {...userform, ...genders, cities: [...cityname]}
+        })
+        // console.log("MergeForm"+ JSON.stringify(mergeform))
+
+          const responsedata =await fetch("http://localhost:8000/user", {
+            method:"POST",
+            body:JSON.stringify(mergeform),
+            headers:{
+             "Content-Type":"application/json"
+            },
+         });
+
+         const userdata = await responsedata.json();
+        //   console.log(userform);
+        //   console.log(genders);
+        //   console.log(cityname);
+    }
+ 
+
+
   return (
     <>
     <div className='signinForm-div'>
     <h4 className='loginTitle'>SIGNUP-FORM</h4>
-        <Form>
+        <Form onClick={handleSubmitForm} >
         <Form.Label htmlFor="inputName">First Name</Form.Label>
             <Form.Control
                 type="text"
                 id="inputFirstname"
+                name='firstName'
+                onChange={handleUserInput}
                 placeholder="Fill your first name"
                 aria-describedby="firstname"
             />
@@ -25,20 +108,26 @@ function SignUpForm() {
             <Form.Control
                 type="text"
                 id="inputLastname"
+                name='lastName'
+                onChange={handleUserInput}
                 placeholder='Fill your last name'
                 aria-describedby="lastname"
             />
-                        <Form.Label htmlFor="inputEmail">Phone</Form.Label>
+            <Form.Label htmlFor="inputPhone">Phone</Form.Label>
             <Form.Control
                 type="text"
                 id="inputPhone"
+                name='Phone'
+                onChange={handleUserInput}
                 placeholder="Fill your phone number"
                 aria-describedby="phone"
             />
-            <Form.Label htmlFor="inputPassword5">Date Of Birth</Form.Label>
+            <Form.Label htmlFor="inputDob">Date Of Birth</Form.Label>
             <Form.Control
                 type="date"
                 id="inputDob"
+                name='dateOfBirth'
+                onChange={handleUserInput}
                 placeholder='Fill your date of birth'
                 aria-describedby="dateOfBirth"
             />
@@ -46,6 +135,8 @@ function SignUpForm() {
             <Form.Control
                 type="email"
                 id="inputEmail"
+                name='Email'
+                onChange={handleUserInput}
                 placeholder="Email-Id"
                 aria-describedby="email"
             />
@@ -53,6 +144,8 @@ function SignUpForm() {
             <Form.Control
                 type="password"
                 id="inputPassword5"
+                name='Password'
+                onChange={handleUserInput}
                 placeholder='Password'
                 aria-describedby="passwordHelpBlock"
             />
@@ -60,86 +153,45 @@ function SignUpForm() {
                 Your password must be 8-20 characters long, contain letters and numbers,
                 and must not contain spaces, special characters, or emoji.
             </Form.Text>
-            <div>
-            <Form.Label htmlFor="inputGender">Gender</Form.Label>
-            {[ 'radio'].map((type) => (
-            <div key={`inline-${type}`} className="mb-3">
-            <Form.Check
-                inline
-                label="Male"
-                name="group1"
-                type={type}
-                id={`inline-${type}-1`}
-            />
-            <Form.Check
-                inline
-                label="Female"
-                name="group1"
-                type={type}
-                id={`inline-${type}-2`}
-            />
-            <Form.Check
-                inline
-                name='group1'
-                label="Other"
-                type={type}
-                id={`inline-${type}-3`}
-            />
-            </div>
-      ))}
-      </div>
     <div className='cityname-div'>
-      <Form.Label htmlFor="inputGender">City</Form.Label>
-            {[ 'checkbox'].map((type) => (
-            <div key={`inline-${type}`} className="mb-3">
+      <Form.Label htmlFor="inputCity">City</Form.Label>      
+            <div  className="mb-3">
+            {citysList.map((city, index) => (
+                
                 <Form.Check
-                    inline
-                    label="Kanpur"
-                    name="group2"
-                    type={type}
-                    id={`inline-${type}-1`}
+                    key={city.cityName}
+                    name='City'
+                    label={city.cityName}
+                    value={city.cityName}
+                    checked={cityname.includes(city.cityName)}
+                    onChange={handleCheckbox}
+                    type="checkbox"
+                    id={`${city.cityName} + ${index}`}
                 />
-                <Form.Check
-                    inline
-                    label="Chandigarh"
-                    name="group2"
-                    type={type}
-                    id={`inline-${type}-2`}
-                />
-                <Form.Check
-                    inline
-                    name='group2'
-                    label="Lucknow"
-                    type={type}
-                    id={`inline-${type}-3`}
-                />
-                <Form.Check
-                    inline
-                    label="Banglore"
-                    name="group2"
-                    type={type}
-                    id={`inline-${type}-2`}
-                />
-                <Form.Check
-                    inline
-                    name='group2'
-                    label="Pune"
-                    type={type}
-                    id={`inline-${type}-3`}
-                />
-                <Form.Check
-                    inline
-                    name='group2'
-                    label="Other"
-                    type={type}
-                    id={`inline-${type}-3`}
-                />
+                  ))}
             </div>
-      ))}
+            <div  className="mb-3">
+                <Form.Label htmlFor="inputGender">Gender</Form.Label>
+                    {genderList.map((gender, index) => (
+                        
+                        <Form.Check
+                            key={gender.genderType+index }
+                            name='Gender'
+                            label={gender.genderType}
+                            checked={genders == gender.genderType}
+                            value={gender.genderType}
+                            onChange={handleRadio}
+                            type="radio"
+                            id={`${gender.id} + ${index}`}
+                        />
+                        ))}
+            </div>
+          
+            {/* <p>{JSON.stringify(citysList)}</p> */}
       </div>
         <div className='select-div mb-5 mt-4'>
         <Form.Label htmlFor="inputGender">Profession</Form.Label>
-                <Form.Select aria-label="select-profession">
+                <Form.Select aria-label="select-profession" name='Profession' onChange={handleUserInput}>
                 <option>Choose profession</option>
                 <option value="bussiness">Bussiness</option>
                 <option value="education">Education</option>
@@ -150,7 +202,7 @@ function SignUpForm() {
                 </Form.Select>
         </div>
             <div className="d-grid gap-2 mt-4">
-                <Button variant="success" size="lg" className='login-btn'>
+                <Button type='submit' variant="success" size="lg" className='login-btn'>
                     SIGNUP
                 </Button>
                 <Button variant='danger' size='lg' className='btn, cancel-btn' onClick={homePage}>CANCEL</Button>
