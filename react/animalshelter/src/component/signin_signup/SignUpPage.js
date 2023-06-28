@@ -12,28 +12,30 @@ function SignUpForm() {
     const homePage = () => {
         navigate("/");
     }
+    const userListPage = () => {
+        navigate("/userlist");
+    }
 
     const [userform, setUserForm] = useState();
-
     const [cityname, setCityName] = useState([]);
     const [genders, setGender] = useState();
+	const [selectedFile, setSelectedFile] = useState();
+	const [isFilePicked, setIsFilePicked] = useState(false);
 
     const [mergeform, setMergeForm] = useState({});
     // const [citys, setCitys] = useState([citysList]);
     let handleUserInput =(e) =>{
         setUserForm({
             ...userform,
-            [e.target.name] :e.target.value,
-            
+            [e.target.name] :e.target.value, 
         });
-   
     }
 
     let handleCheckbox = (e) => {
 
         let isChecked = e.target.checked;
         let checkedValue = e.target.value;
-        console.log({[e.target.name]: [...cityname, checkedValue]})
+        // console.log({[e.target.name]: [...cityname, checkedValue]})
         if(isChecked){
             setCityName((prevData)=>  [...cityname, checkedValue]);
         }else{
@@ -47,53 +49,47 @@ function SignUpForm() {
     }
     const handleRadio = (e) => {
         let isSelected = e.target.checked;
-        let radioValue = e.target.value;
-
-        console.log("Before"+isSelected, radioValue, genders)
-
         setGender({
             genders:e.target.value
         });
-
-        console.log("After"+isSelected, radioValue, genders)
-        // if(isSelected){
-        //     setGender(radioValue);
-        // }else{
-        //     setGender((prevData) => {
-        //         return prevData.filter((val) => {
-        //             return val !== radioValue;
-        //         })
-        //     })
-        // }
     }
+
+	const changeHandler = (event) => {
+        
+        console.log("Selected File");
+        console.log("Selected File"+" " +selectedFile)
+        console.log("Selected File"+" " + isFilePicked)
+		setSelectedFile(event.target.files[0]);
+		setIsFilePicked(true);
+	};
+
     let handleSubmitForm = async(e)=>{
         e.preventDefault();
-         //mergeform = new Array( JSON.stringify(userform),JSON.stringify(genders), "City:"+cityname);
-        setMergeForm((prevData) => {
-            return {...userform, ...genders, cities: [...cityname]}
-        })
-        // console.log("MergeForm"+ JSON.stringify(mergeform))
+        // if(mergeform != undefined  && Object.keys(mergeform).length > 1 && Object.values(mergeform).length > 1){
+            setMergeForm((prevData) => {
+                return {...userform, ...genders, cities: [...cityname]}
+            })
 
-          const responsedata =await fetch("http://localhost:8000/user", {
-            method:"POST",
-            body:JSON.stringify(mergeform),
-            headers:{
-             "Content-Type":"application/json"
-            },
-         });
+            const responsedata =await fetch("http://localhost:8000/user", {
+                method:"POST",
+                body:JSON.stringify(mergeform),
+                headers:{
+                "Content-Type":"application/json"
+                },
+            });
 
-         const userdata = await responsedata.json();
-        //   console.log(userform);
-        //   console.log(genders);
-        //   console.log(cityname);
+            const userdata = await responsedata.json();
+        
+        // if(userform !=undefined ||  userform != null && cityname !=undefined || cityname !=null && genders != undefined || genders != null){
+        //    navigate("/");
+        // }
+    //    } 
     }
- 
-
-
   return (
     <>
     <div className='signinForm-div'>
     <h4 className='loginTitle'>SIGNUP-FORM</h4>
+    <Button variant='success' onClick={userListPage}>User List</Button>
         <Form onClick={handleSubmitForm} >
         <Form.Label htmlFor="inputName">First Name</Form.Label>
             <Form.Control
@@ -155,11 +151,10 @@ function SignUpForm() {
             </Form.Text>
     <div className='cityname-div'>
       <Form.Label htmlFor="inputCity">City</Form.Label>      
-            <div  className="mb-3">
             {citysList.map((city, index) => (
                 
                 <Form.Check
-                    key={city.cityName}
+                    key={city.id +index}
                     name='City'
                     label={city.cityName}
                     value={city.cityName}
@@ -169,37 +164,54 @@ function SignUpForm() {
                     id={`${city.cityName} + ${index}`}
                 />
                   ))}
-            </div>
             <div  className="mb-3">
                 <Form.Label htmlFor="inputGender">Gender</Form.Label>
                     {genderList.map((gender, index) => (
-                        
-                        <Form.Check
-                            key={gender.genderType+index }
-                            name='Gender'
-                            label={gender.genderType}
-                            checked={genders == gender.genderType}
-                            value={gender.genderType}
-                            onChange={handleRadio}
-                            type="radio"
-                            id={`${gender.id} + ${index}`}
-                        />
+                            <div>
+                            {/* <p>Genders {JSON.stringify(genders).includes(gender.genderType)}{gender.genderType}</p> */}
+                                <Form.Check
+                                    key={gender.id+index }
+                                    name='genders'
+                                    label={gender.genderType}
+                                    checked={genders ?  JSON.stringify(genders).includes(gender.genderType): ""}
+                                    value={gender.genderType}
+                                    onChange={handleRadio}
+                                    type="radio"
+                                    id={`${gender.id} + ${index}`}
+                                />
+                            </div>
                         ))}
-            </div>
-          
-            {/* <p>{JSON.stringify(citysList)}</p> */}
+
+              </div>
       </div>
         <div className='select-div mb-5 mt-4'>
-        <Form.Label htmlFor="inputGender">Profession</Form.Label>
+            <Form.Label htmlFor="inputGender">Profession</Form.Label>
                 <Form.Select aria-label="select-profession" name='Profession' onChange={handleUserInput}>
-                <option>Choose profession</option>
-                <option value="bussiness">Bussiness</option>
-                <option value="education">Education</option>
-                <option value="engineer">Engineering</option>
-                <option value="teacher">Teacher</option>
-                <option value="leader">Leader</option>
-                <option value="manager">Manager</option>
+                    <option>Choose profession</option>
+                    <option value="bussiness">Bussiness</option>
+                    <option value="education">Education</option>
+                    <option value="engineer">Engineering</option>
+                    <option value="teacher">Teacher</option>
+                    <option value="leader">Leader</option>
+                    <option value="manager">Manager</option>
                 </Form.Select>
+        </div>
+        <div className='select-div mb-5 mt-4'>
+            <Form.Label >Upload File</Form.Label>
+            <Form.Control type="file"  name="file" onChange={changeHandler}/>
+			{isFilePicked ? (
+				<div>
+					<p>Filename: {selectedFile.name}</p>
+					<p>Filetype: {selectedFile.type}</p>
+					<p>Size in bytes: {selectedFile.size}</p>
+					<p>
+						lastModifiedDate:{' '}
+						{selectedFile.lastModifiedDate.toLocaleDateString()}
+					</p>
+				</div>
+			) : (
+				<p>Select a file to show details</p>
+			)}
         </div>
             <div className="d-grid gap-2 mt-4">
                 <Button type='submit' variant="success" size="lg" className='login-btn'>

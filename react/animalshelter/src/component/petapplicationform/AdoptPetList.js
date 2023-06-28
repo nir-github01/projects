@@ -1,7 +1,10 @@
 import axios from "axios";
+import Table from 'react-bootstrap/Table';
 import React, { useEffect, useState } from "react";
 import Button from "react-bootstrap/esm/Button";
 import { useNavigate } from "react-router";
+import { Link } from "react-router-dom";
+import UpdateAdoptForm from "./UpdateAdoptForm";
 
 
 function AdoptPetList(){
@@ -15,19 +18,17 @@ function AdoptPetList(){
     const addAdopters =() => {
         navigate('/adopt');
     }
+    // const updateAdoptForm = () => {
+    //     navigate("/update")
+    // }
 
-    const [adoptpets, setAdoptPets] = useState();
+    const [adoptpets, setAdoptPets] = useState([]);
+    const [updateadopts, setUpdateAdopts] = useState([])
 
 
 
     useEffect(() => {
         const getAdoptPetlist = async()=> {
-        //     const getAdoptpet =axios.get("http://localhost:4000/adoptdata" + addAdopters._id );
-        //     // const adopterList = await getAdoptpet.json();
-        //     setAdoptPets(getAdoptpet.data)
-            
-        // }
-
         const getresponse = await fetch("http://localhost:4000/adoptdata", {
             method:'GET',
            });
@@ -36,53 +37,60 @@ function AdoptPetList(){
 
      }
         getAdoptPetlist();
-    }, []);
+    }, [adoptpets]);
+
     return (
         <>
-             <div className="adoptPet-class">
+            <div className="adoptPet-class">
               <h4>Pet Adopter List </h4>
               <Button onClick={addAdopters}  className="me-4" variant="success">Add</Button>
               <Button onClick={homePage} variant="danger">Home </Button>
               
-              <table>
-                <thead>
-                    <th>First Name</th>
-                    <th>Last Name</th>
-                    <th>Email</th>
-                    <th>Phone</th>
-                    <th>Pet Type</th>
-                    <th>Breed Type</th>
-                    <th>Password</th>
-                    <th>Action</th>
-                </thead>
-                <tbody>
-                {/* <td>{JSON.stringify(adoptpets)}</td> */}
-                    {/* {
-                     adoptpets.map((adopter)=>
-                        <div>
-                        <td>{adopter.FirstName}</td>
-                        <td>{adopter.LastName}</td>
-                        <td>{adopter.Email}</td>
-                        <td>{adopter.Phone}</td>
-                        <td>{adopter.PetType}</td>
-                        <td>{adopter.BreedType}</td>
-                        <td><Button>Add</Button></td>
-                        <td><Button>Update</Button></td>
-                        <td><Button>Delete</Button></td>
-                        </div>
-                     )} */}
-                     <td>First Name</td>
-                    <td>Last Name</td>
-                    <td>Email</td>
-                    <td>Phone</td>
-                    <td>Pet Type</td>
-                    <td>Breed Type</td>
-                    <td>Password</td>
-                    <td>Action</td>
-                </tbody>
-              </table>
+                <Table striped bordered hover>
+              
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>Email</th>
+                            <th>Phone</th>
+                            <th>Pet Type</th>
+                            <th>Breed Type</th>
+                            <th>Password</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    {adoptpets ? adoptpets.map((adopter, idx)=>(
+                    <tbody key={idx}>
+                        <tr>
+                            <td>{adopter._id}</td>
+                            <td>{adopter.FirstName}</td>
+                            <td>{adopter.LastName}</td>
+                            <td>{adopter.Email}</td>
+                            <td>{adopter.Phone}</td>
+                            <td>{adopter.PetType}</td>
+                            <td>{adopter.BreedType}</td>
+                            <td>{adopter.Password}</td>
+                            <td>
+                                <Button variant="primary" className="me-2">Add</Button>
+                               <Link to={"/adoptpets/update/" + adopter._id}>
+                                   <Button variant="success" className="me-2">Update</Button>
+                               </Link>
+                                <Button variant="danger" className="me-2">Delete</Button>
+                            </td>
+                        </tr>
+                    </tbody>
+                    )) 
+                    : <p>No Adapters found</p>}
+                    <tfoot>
+                        <tr>
+                            <td>Footer</td>
+                        </tr>
+                    </tfoot>
+                </Table>
 
-             </div>
+            </div>
             
         </>
     )

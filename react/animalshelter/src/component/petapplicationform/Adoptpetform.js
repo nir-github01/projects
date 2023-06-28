@@ -32,11 +32,17 @@ function AdoptionForm() {
             headers:{
                 'Content-Type':'application/json'
             }
-           });
+           })
+           .then(function (response){
+                 return response.json();
+           })
+           .then(function(data) {
+            console.log("Request succeded with JSON response", data);
+           })
+           .catch(function(error) {
+            console.log("Request Failed", error);
+           })
            const postdata = await postresponse.json();
-           console.log(postdata);
-         // console.log(form);
-        // alert("submitted");
 
      }
 

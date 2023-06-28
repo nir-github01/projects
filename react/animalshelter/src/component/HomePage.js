@@ -9,6 +9,7 @@ import FooterPage from "./footerpage/FooterPage";
 import HeaderPage from "./header/Header";
 import AdoptPetList from "./petapplicationform/AdoptPetList";
 import {useNavigate} from "react-router-dom";
+import UsersList from "./signin_signup/UserList";
 
 function HomePage() {
   const navigate = useNavigate();
@@ -22,25 +23,26 @@ function HomePage() {
     navigate("/signin");
     
   }
-  const adoptFormdatacls =() =>{
-    navigate("/adoptform");
+  const updateAdopt = () => {
+    navigate("/update")
   }
-  const adoptFormdata =() =>{
-    navigate("/adopt");
-  }
+  // const adoptFormdatacls =() =>{
+  //   navigate("/adoptform");
+  // }
+  // const adoptFormdata =() =>{
+  //   navigate("/adopt");
+  // }
     return (
         <>
         <div className="nav-btn-div">
            <Button className="navbtn me-3" onClick={signInForm} >SIGNIN </Button> 
            <Button className="navbtn" onClick={signUpForm}>SIGNUP </Button> 
-           <Button className="btn btn-danger me-4" onClick={adoptFormdata}>ADOPT</Button>
-           <Button className="btn btn-danger me-4" onClick={adoptFormdatacls}>ADOPT</Button>
+           <Button className="me-4" variant="success" onClick={updateAdopt}>Update Adopt</Button>
+           <HeaderPage />
+          <SectionPage /> 
+          <FooterPage/> 
         </div>
-        {/* <AdoptionForm />
-        <GiveAwayform /> */} 
-        <HeaderPage />
-        <SectionPage /> 
-        <FooterPage/>  
+
         </>
     )
 }

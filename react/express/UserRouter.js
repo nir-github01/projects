@@ -21,6 +21,7 @@ userRouter.post("/user", async(req, res) =>{
     users.lastName = req.body.lastName;
     users.Email = req.body.Email;
     users.Phone = req.body.Phone;
+    users.dateOfBirth = req.body.dateOfBirth;
     users.Password = req.body.Password;
     users.Profession = req.body.Profession;
     users.genders = req.body.genders;

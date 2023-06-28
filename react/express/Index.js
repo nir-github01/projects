@@ -38,15 +38,46 @@ app.post("/adoptdata", async(req, res) =>{
     adoptdata.Password = req.body.Password
 
     let adoption = await adoptdata.save();
-    console.log(adoption);
 //  console.log(req.body)
     res.json(adoption)
 });
 
 app.get("/adoptdata", async(req, res) => {
+
     let adoptiondatas = await AdoptPetData.find({});
-    console.log(adoptiondatas);
-    res.send(adoptiondatas);
+      res.send(adoptiondatas);
+});
+
+app.get("/adopt/v1/:id", async(req, res) => {
+   
+  let ids = req.params.id;
+  let adoptiondatas = await AdoptPetData.findById(ids);
+    res.send(adoptiondatas + " " + ids);
+});
+
+app.patch("/adoptpets/update/:id", async(req, res) => {
+
+    let updateData = await AdoptPetData.findOneAndUpdate();
+    let breedtype = req.params.BreedType;
+         console.log(breedtype)
+    res.status(200).send(updateData + breedtype);
+})
+
+app.put("/adoptpets/update/:id", async(req, res, next) => {
+    
+  let ids = req.params.id;
+  let findnupdate = await AdoptPetData.findByIdAndUpdate( ids, {$set:{
+    BreedType:req.body.BreedType,
+    PetType : req.body.PetType,
+    FirstName:req.body.FirstName,
+    LastName:req.body.LastName,
+    Phone:req.body.Phone,
+    Email:req.body.Email,
+    Password:req.body.Password
+
+  }} 
+  )
+  res.send(`put method called ${findnupdate}` );
 });
 
 app.listen(port, async(req, res)=>{
