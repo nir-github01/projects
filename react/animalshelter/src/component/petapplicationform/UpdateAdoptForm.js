@@ -23,6 +23,7 @@ function UpdateAdoptForm(props) {
     //form data handling
 
     const [updateform, setUpdateForm ]  = useState([]);
+
     
 
     const handleSubmit = async(e) => {
@@ -55,7 +56,7 @@ function UpdateAdoptForm(props) {
 
     // useEffect(() => {
     //     const getAdoptPetlist = async()=> {
-    //     const getresponse = await fetch("http://localhost:4000/adoptdata", {
+    //     const getresponse = await fetch("http://localhost:4000/adoptdata/:id", {
     //         method:'GET',
     //        });
     //        const getdata = await getresponse.json();

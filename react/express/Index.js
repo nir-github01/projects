@@ -25,8 +25,16 @@ const userFormget = require("./UserRouter");
   console.log("Databse connected")  
 }
 
-app.use(cors());
+// app.use(cors());
+app.use(cors({origin: true, credentials: true}));
 app.use(bodyParser.json())
+
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+  res.header("Access-Control-Allow-Headers", "x-access-token, Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
 app.post("/adoptdata", async(req, res) =>{
     let adoptdata = new AdoptPetData();
     adoptdata.PetType =req.body.PetType,
@@ -42,20 +50,22 @@ app.post("/adoptdata", async(req, res) =>{
     res.json(adoption)
 });
 
-app.get("/adoptdata", async(req, res) => {
+app.get("/adoptdata", async(req, res, next) => {
 
     let adoptiondatas = await AdoptPetData.find({});
+      res.header('Access- Control-Allow-Origin');
+      res.header("Access-Control-Allow-Headers");
       res.send(adoptiondatas);
 });
 
-app.get("/adopt/v1/:id", async(req, res) => {
+app.get("/adopt/v1/:id", async(req, res, next) => {
    
   let ids = req.params.id;
   let adoptiondatas = await AdoptPetData.findById(ids);
     res.send(adoptiondatas + " " + ids);
 });
 
-app.patch("/adoptpets/update/:id", async(req, res) => {
+app.patch("/adoptpets/update/:id", async(req, res, next) => {
 
     let updateData = await AdoptPetData.findOneAndUpdate();
     let breedtype = req.params.BreedType;
@@ -78,6 +88,15 @@ app.put("/adoptpets/update/:id", async(req, res, next) => {
   }} 
   )
   res.send(`put method called ${findnupdate}` );
+});
+
+app.delete("/adopt/delete/:id", async(req, res, next) => {
+  
+
+  let ids = req.params.id;
+  let deleteadoptdata =await AdoptPetData.findByIdAndDelete(ids)
+  console.log("deleted method excuted" + deleteadoptdata);
+  res.send(deleteadoptdata);
 });
 
 app.listen(port, async(req, res)=>{

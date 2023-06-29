@@ -10,6 +10,7 @@ import HeaderPage from "./header/Header";
 import AdoptPetList from "./petapplicationform/AdoptPetList";
 import {useNavigate} from "react-router-dom";
 import UsersList from "./signin_signup/UserList";
+import { Link } from "react-router-dom";
 
 function HomePage() {
   const navigate = useNavigate();
@@ -37,7 +38,9 @@ function HomePage() {
         <div className="nav-btn-div">
            <Button className="navbtn me-3" onClick={signInForm} >SIGNIN </Button> 
            <Button className="navbtn" onClick={signUpForm}>SIGNUP </Button> 
-           <Button className="me-4" variant="success" onClick={updateAdopt}>Update Adopt</Button>
+          {/* <Link  to="/adoptpets/update/:id">
+           <Button className="me-4" variant="success" >Update Adopt</Button>
+          </Link> */}
            <HeaderPage />
           <SectionPage /> 
           <FooterPage/> 

@@ -8,8 +8,10 @@ function FooterPage() {
             <footer>
                 <table>
                     <thead>
+                    <tr>
                         <th>Footer</th>
                         <th> </th>
+                        </tr>
                     </thead>
                 </table>
             </footer>

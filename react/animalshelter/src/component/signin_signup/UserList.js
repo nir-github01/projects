@@ -73,12 +73,13 @@ function UsersList(){
                         </tr>
                     </tbody>
                     )) 
-                    : <p>No User found</p>}
+                    :
                     <tfoot>
                         <tr>
-                            <td>Footer</td>
+                           <th>No User founds</th>
                         </tr>
                     </tfoot>
+                    }
                 </Table>
 
             </div>

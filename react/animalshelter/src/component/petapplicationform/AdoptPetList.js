@@ -1,10 +1,11 @@
 import axios from "axios";
-import Table from 'react-bootstrap/Table';
 import React, { useEffect, useState } from "react";
 import Button from "react-bootstrap/esm/Button";
+import Table from 'react-bootstrap/Table';
 import { useNavigate } from "react-router";
 import { Link } from "react-router-dom";
 import UpdateAdoptForm from "./UpdateAdoptForm";
+
 
 
 function AdoptPetList(){
@@ -23,21 +24,45 @@ function AdoptPetList(){
     // }
 
     const [adoptpets, setAdoptPets] = useState([]);
-    const [updateadopts, setUpdateAdopts] = useState([])
+    const [updateadopts, setUpdateAdopts] = useState([]);
+    const [deletedatas, setDeleteDatas] = useState([]);
 
-
-
+      
     useEffect(() => {
-        const getAdoptPetlist = async()=> {
-        const getresponse = await fetch("http://localhost:4000/adoptdata", {
-            method:'GET',
-           });
-           const getdata = await getresponse.json();
-           setAdoptPets(getdata);
+        axios.get("http://localhost:4000/adoptdata").then(res => {
+            const getData = res.data;
+            setAdoptPets(getData);
+            console.log(getData);
+        })
+        .catch((error) => {
+            console.log(error)
+        })
+      }, [])
 
-     }
-        getAdoptPetlist();
-    }, [adoptpets]);
+    let handleDelete =async () => {
+
+        axios.delete("http://localhost:4000/adopt/delete/:id")
+        .then(res => console.log(res.data))
+        .catch(error => console.error(error));
+        axios
+        .delete(
+            "http://localhost:4000/adopt/delete/" + _id)
+        .then((res) => {
+          if (res.status === 200) {
+            alert("Student successfully deleted");
+            window.location.reload();
+          } else Promise.reject();
+        })
+        .catch((err) => alert("Something went wrong"));
+    
+        // let deleteResponse = await fetch("http://localhost:4000/adopt/delete/:id", {
+        //   method:"DELETE"
+        // }).then(res => res.json())
+        // .then(data => console.log(data))
+        // .catch(error => console.error(error));
+
+
+}
 
     return (
         <>
@@ -77,17 +102,18 @@ function AdoptPetList(){
                                <Link to={"/adoptpets/update/" + adopter._id}>
                                    <Button variant="success" className="me-2">Update</Button>
                                </Link>
-                                <Button variant="danger" className="me-2">Delete</Button>
+                                <Button variant="danger" className="me-2" onClick={handleDelete}>Delete</Button>
                             </td>
                         </tr>
                     </tbody>
                     )) 
-                    : <p>No Adapters found</p>}
+                    : 
                     <tfoot>
                         <tr>
-                            <td>Footer</td>
+                          <th>No data founds</th>
                         </tr>
                     </tfoot>
+                    }
                 </Table>
 
             </div>
