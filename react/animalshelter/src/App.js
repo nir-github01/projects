@@ -17,7 +17,6 @@ function App() {
   return (
     <>
     <div className="App">
-      <h2>Animal Shelter App</h2>
           <Routes>
             <Route exact path='/' element={<HomePage />}></Route>
             <Route exact path='/signin' element={<SignInForm />}></Route>

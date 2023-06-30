@@ -24,36 +24,43 @@ function AdoptPetList(){
     // }
 
     const [adoptpets, setAdoptPets] = useState([]);
-    const [updateadopts, setUpdateAdopts] = useState([]);
-    const [deletedatas, setDeleteDatas] = useState([]);
 
       
     useEffect(() => {
-        axios.get("http://localhost:4000/adoptdata").then(res => {
-            const getData = res.data;
+
+        let fetchAdoptData =async() =>{
+            let fetchresponse = await fetch("http://localhost:4000/adoptdata", {
+                method:"GET"
+            });
+            let getData =await  fetchresponse.json();
             setAdoptPets(getData);
+        // axios.get("http://localhost:4000/adoptdata").then(res => {
+        //     const getData = res.data;
+        //     setAdoptPets(getData);
             console.log(getData);
-        })
-        .catch((error) => {
-            console.log(error)
-        })
+        // })
+        // .catch((error) => {
+        //     console.log(error)
+        // })
+        }
+        fetchAdoptData()
+
       }, [])
 
     let handleDelete =async () => {
 
-        axios.delete("http://localhost:4000/adopt/delete/:id")
-        .then(res => console.log(res.data))
-        .catch(error => console.error(error));
-        axios
-        .delete(
-            "http://localhost:4000/adopt/delete/" + _id)
+        // axios.delete("http://localhost:4000/adopt/delete/:id")
+        // .then(res => console.log(res.data))
+        // .catch(error => console.error(error));
+        axios.delete(
+            "http://localhost:4000/adopt/delete/")
         .then((res) => {
           if (res.status === 200) {
             alert("Student successfully deleted");
             window.location.reload();
           } else Promise.reject();
         })
-        .catch((err) => alert("Something went wrong"));
+        .catch((err) => console.log(err));
     
         // let deleteResponse = await fetch("http://localhost:4000/adopt/delete/:id", {
         //   method:"DELETE"
@@ -68,8 +75,8 @@ function AdoptPetList(){
         <>
             <div className="adoptPet-class">
               <h4>Pet Adopter List </h4>
-              <Button onClick={addAdopters}  className="me-4" variant="success">Add</Button>
-              <Button onClick={homePage} variant="danger">Home </Button>
+              <Button onClick={addAdopters}  className="me-4 mt-3 mb-2" variant="success">Add + </Button>
+              <Button onClick={homePage} variant="danger" className="mt-3 mb-3">Home </Button>
               
                 <Table striped bordered hover>
               
