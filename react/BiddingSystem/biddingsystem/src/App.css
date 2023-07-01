@@ -4,4 +4,17 @@
 .App {
   text-align: center;
 }
+.formcontainer{
+  margin: auto;
+  width: 60%;
+  border: 1px solid rgb(95, 95, 218);
+  box-shadow: 4px 4px 4px 4px rgb(94, 94, 139);
+}
+.form-label{
+  padding: 10px;
+  margin: 10px;
+}
+.form-control{
+  border-color: aqua;
+}
 
