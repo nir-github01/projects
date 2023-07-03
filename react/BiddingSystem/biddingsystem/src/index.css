@@ -13,13 +13,13 @@ code {
 }
 
 .form-control {
-  width: 160%;
   padding: 3px;
-  margin: 10px;
+  margin: 20px;
   border-color: aqua;
   outline-color: aqua;
 }
 label{
+  margin: 20px;
   font-weight:600 ;
 }
 
@@ -30,4 +30,14 @@ label{
   box-sizing: border-box;
   border-radius: 2vh;
   box-shadow: 3px 3px 3px 3px rgb(74, 74, 179);
+}
+/* .multi-select{
+  width: 35%;
+  margin:auto;
+} */
+
+.btn{
+  line-height: 20px;
+  letter-spacing: 2px;
+  font-size: large;
 }
