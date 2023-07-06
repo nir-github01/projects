@@ -114,17 +114,39 @@ function SignUpPage() {
       })
       setIsFilePicked(true)
     } 
-    const signUpFormSubmit =(event) => {
+    const signUpFormSubmit = async(event) => {
         event.preventDefault();
         let formData = new FormData();
          let fval = formData.append('File', selectedFile);
-    
+         
+         console.log("File Upload"+" "+fval)
         setMergeForm({
             ...signupform, tradingType: [...tradingType], gender, sipmentYear, cities:[...cities],
-            investmentType, documents:[...selected], selectedFile
+            investmentType, documents:[...selected]
         });
-        console.log(mergeform)
+        // await axios.post("http://localhost:4000/rout/server/post").then((res)=>{
+          
+        // })
 
+        let response = await fetch("http://localhost:4000/rout/server/post", {
+          method:"POST",
+          body:JSON.stringify(mergeform),
+          headers:{
+            "Content-Type":"application/json",
+          }
+        })
+        let userpostdata = await response.json();
+        let fileresponse = await fetch("http://localhost:4000/rout/server/post", {
+          method:"POST",
+          body:JSON.stringify(mergeform),
+          headers:{
+            "Content-Type":"application/json",
+          }
+        })
+        let userpostfiledata = await fileresponse.json();
+
+        console.log("user Response data " + userpostdata);
+        console.log(mergeform)
         console.log(Object.keys(mergeform))
     }
     
@@ -256,12 +278,12 @@ function SignUpPage() {
                      <div>
                      <label className='form-file col-sm-5'>
                        Documents <span className='errmsg'  style={{color:'red'}}>*</span>
-                     <MultiSelect
+                     {/* <MultiSelect
                         options={docList}
                         value={selected}
                         onChange={setSelected}
                         labelledBy="Choose documents"
-                      />
+                      /> */}
                      <select className='form-select mt-3' name='documents' onChange={handleFormIpt}>
                         <option>Choose Documents</option>
                         {docList.map((doc, idx) => (
