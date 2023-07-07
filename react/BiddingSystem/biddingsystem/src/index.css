@@ -41,3 +41,54 @@ label{
   letter-spacing: 2px;
   font-size: large;
 }
+
+.timing_container{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-content: space-around;
+}
+.stopwatch-box{
+  color: chartreuse;
+  font-style: normal;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: rgb(47, 85, 72);
+  padding: 20px;
+  border: 2px solid rgb(63, 62, 117);
+  box-shadow: 6px 6px 6px 6px rgb(170, 100, 92);
+  border-radius: 2vh;
+}
+.timecounter-box{
+  padding: 20px;
+  border: 2px solid rgb(63, 62, 117);
+  box-shadow: 6px 6px 6px 6px rgb(170, 100, 92);
+  border-radius: 2vh;
+}
+.counter-box{
+  box-shadow:4px 4px 4px 4px  rgb(148, 108, 189);
+  color: chocolate;
+  padding: 5px;
+  border-bottom-left-radius: 2vh;
+  border-bottom-right-radius: 2vh;
+
+ background-color: rgb(53, 98, 134);
+}
+.time-box{
+  box-shadow:4px 4px 4px 4px  rgb(148, 97, 196);
+  color: rgb(18, 32, 223);
+  border-top-left-radius: 2vh;
+  border-top-right-radius: 2vh;
+  padding: 5px;
+ background-color: rgb(199, 94, 248);  
+}
+
+.stockListbox{
+  width: max-content;
+  border: 2px solid green;
+  padding: 20px;
+  margin: 10px;
+}
+
+.stockList-container{
+  border: 2px solid blue;
+}

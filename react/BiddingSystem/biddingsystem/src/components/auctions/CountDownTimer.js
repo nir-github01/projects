@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 
-const CountDownTimer = ({hoursMinSecs}) => {
+
+const CountDownTimer = (hoursMinSecs) => {
 
     const {hours = 0, minutes = 0, seconds=60} = hoursMinSecs;
     const [[hrs, mins, secs], setTime]  = useState([hours, minutes, seconds]);
@@ -21,6 +22,7 @@ const CountDownTimer = ({hoursMinSecs}) => {
 
     useEffect(() => {
         const timerId = setInterval(() => tick(), 1000);
+        
         return () => clearInterval(timerId);
     });
   return (

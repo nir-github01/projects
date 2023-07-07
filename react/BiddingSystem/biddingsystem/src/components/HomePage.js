@@ -3,8 +3,8 @@ import React from 'react';
 // import SignUpPage from './SignUp/SignUpPage';
 import NavigationPage from './navigation/NavPage';
 import AcutionPage from './auctions/AcutionPage';
-// import FormPage from './FormPage'
-
+import NewsPage from './auctions/ovNewEventFo/NewsPage';
+// import FormPage from './FormPage';
 function HomePage() {
   return (<>
     <div>HomePage</div>
@@ -14,6 +14,7 @@ function HomePage() {
     {/* <SignUpPage /> */}
     {/* <FormPage /> */}
     <AcutionPage/>
+    <NewsPage />
     </>
   )
 }
