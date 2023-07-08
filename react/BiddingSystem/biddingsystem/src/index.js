@@ -5,11 +5,15 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { BrowserRouter } from 'react-router-dom';
+import { ClearCacheProvider } from 'react-clear-cache';
+
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <BrowserRouter>
+    <ClearCacheProvider duration={5000}>
     <App />
+  </ClearCacheProvider>
   </BrowserRouter>
 );
 

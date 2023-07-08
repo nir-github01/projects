@@ -1,52 +1,60 @@
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
 
 const NewsPage = () => {
 
-    const [allNews, setAllNews] = useState(new Array());
+    const [allNews, setAllNews] = useState([]);
     const [marketAllNews, setMarketAllNews] = useState([]);
+
     useEffect(() => {
-        let getNews = async() =>{
-            let response = await fetch("https://newsapi.org/v2/top-headlines?country=in&apiKey=d41de6d67a114d82854a7963fb94eaf4",{
-                method:"GET",
-            });
-            let newsData = await response.json();
-            setAllNews(newsData);  
-        }
-        getNews();
+     
+        axios.get("https://newsapi.org/v2/top-headlines?country=in&apiKey=d41de6d67a114d82854a7963fb94eaf4")
+            .then((res)=>{
+                console.log(res.data.articles);
+                setAllNews(res.data.articles);
+            })
     }, []);
+
+
     useEffect(() => {
-        let getMktNews = async() =>{
-            let responsemkt = await fetch(" https://api.mediastack.com/v1/news?access_key=7198ea74662111b2dde3537255377393&keywords=tennis&countries=us,gb,de"
-            ,{
-                method:"GET",
-            });
-            let mktnewsData = await responsemkt.json();
-            setMarketAllNews(JSON.stringify( mktnewsData));
-            
-        }
-        getMktNews();
-    }, []);
+     
+      axios.get("https://api.marketaux.com/v1/news/all?exchanges=NYSE,NASDAQ&api_token=0nliES2eaa5S8oYylGyf3MnIIttlRblPTeClq2jH")
+          .then((res)=>{
+              console.log(res.data.data);
+              setMarketAllNews(res.data.data);
+          })
+  }, []);
+
 
     return (
     <>
           <div className='newsContainer'>
-             <p>{JSON.stringify(allNews)}</p>
-                { Array.isArray(allNews) ? allNews.map((news) =>(
-                  <div className='newbox'>
-                  <p>{news}</p>
-                     <h6>{news.title}</h6>
-                     <p>{news.description}</p>
-                     <p>{news.author}</p>
-                     <p></p> 
-                  </div>
-                 
-                  ))  : " No News Found"}
+          <h5>Today's News</h5>
+                {  allNews.map((news, idx) => { 
+                  return(
+                      <div className='news-box' key={idx}>
+                        <p><img src={news.urlToImage} className='newsImage' /></p>
+                        <p><b>Published At:</b>   {news.publishedAt}</p>
+                        <p><b>Title:</b>    {news.title}</p>
+                        <p><b>Content:</b>   {news.content}</p>
+                        <p><b>Description :</b>   {news.description}</p>
+                      </div>
+                )})}
           </div>
-          <div className='mktNews_container'>
-
-          <h1>Market news Announced</h1>
-               <p>{marketAllNews}</p>
+           <hr />
+          <div className='newsContainer'>
+          <h4>Market News </h4>
+                {  marketAllNews.map((mktnews, idx) => { 
+                  return(
+                      <div className='news-box' key={idx}>
+                        <p><img src={mktnews.image_url} className='newsImage'/></p>
+                        <p><b>Published At:</b>   {mktnews.published_at}</p>
+                        <p><b>Title:</b>    {mktnews.title}</p>
+                        <p><b>Content:</b>   {mktnews.keywords}</p>
+                        <p><b>Description :</b>   {mktnews.description}</p>
+                      </div>
+                )})}
           </div>
 
 

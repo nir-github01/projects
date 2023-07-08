@@ -92,3 +92,24 @@ label{
 .stockList-container{
   border: 2px solid blue;
 }
+.newsContainer{
+  
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+}
+
+.news-box {
+  border: 3px solid brown;
+  width: 30%;
+  height: 30%;
+  text-align: justify;
+  margin: 20px;
+  padding: 20px;
+}
+
+.newsImage{
+  width: 100%;
+  height: 50%;
+}

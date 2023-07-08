@@ -48,18 +48,17 @@ const StopWatchPage = () => {
     const getSeconds = `0${seconds1 % 60}`.slice(-2)
     const getMinutes = `0${Math.floor(stopwatch / 3600)}`.slice(-2);
 
-    const getHours = `0${Math.floor(stopwatch / 36000)}`.slice(-2);
+    const getHours = `0${Math.floor(stopwatch / 360000)}`.slice(-2);
 
     let milliseconds = parseInt(Math.floor(stopwatch % 60));
     let seconds = parseInt(Math.floor(stopwatch % 6000) / 100);
-    let minutes = parseInt(Math.floor(stopwatch % 360000)/ 1000);
-    let hours = parseInt(Math.floor(stopwatch % 360000) /10000);
+    let minutes = parseInt(Math.floor(stopwatch / 3600)/10);
+    let hours = parseInt(Math.floor(stopwatch % 360000000)/10000);
 
     useEffect(() => {
+        
         if(getMinutes == 5){
           setNotification(  addToast("Five Minute Comleted", {appearance:'warning'}) )
-        }else if(getMinutes == 10){
-            setNotification(  addToast("Ten Minute Comleted", {appearance:'info'}) )
         }
     },[getMinutes])
 
