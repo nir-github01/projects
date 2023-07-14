@@ -3,7 +3,8 @@ import React from 'react';
 // import SignUpPage from './SignUp/SignUpPage';
 import NavigationPage from './navigation/NavPage';
 import AcutionPage from './auctions/AcutionPage';
-import NewsPage from './auctions/ovNewEventFo/NewsPage';
+// import NewsPage from './auctions/ovNewEventFo/NewsPage';
+// import NewsDetails from './auctions/ovNewEventFo/NewsDetails';
 // import FormPage from './FormPage';
 function HomePage() {
   return (<>
@@ -14,7 +15,8 @@ function HomePage() {
     {/* <SignUpPage /> */}
     {/* <FormPage /> */}
     <AcutionPage/>
-    <NewsPage />
+    {/* <NewsPage /> */}
+    {/* <NewsDetails /> */}
     </>
   )
 }

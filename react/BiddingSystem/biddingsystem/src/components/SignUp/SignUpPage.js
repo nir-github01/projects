@@ -116,10 +116,6 @@ function SignUpPage() {
     } 
     const signUpFormSubmit = async(event) => {
         event.preventDefault();
-        let formData = new FormData();
-         let fval = formData.append('File', selectedFile);
-         
-         console.log("File Upload"+" "+fval)
         setMergeForm({
             ...signupform, tradingType: [...tradingType], gender, sipmentYear, cities:[...cities],
             investmentType, documents:[...selected]
@@ -136,18 +132,19 @@ function SignUpPage() {
           }
         })
         let userpostdata = await response.json();
-        let fileresponse = await fetch("http://localhost:4000/rout/server/post", {
-          method:"POST",
-          body:JSON.stringify(mergeform),
-          headers:{
-            "Content-Type":"application/json",
-          }
-        })
-        let userpostfiledata = await fileresponse.json();
+
+        // let fileresponse = await fetch("http://localhost:4000/rout/server/post", {
+        //   method:"POST",
+        //   body:JSON.stringify(mergeform),
+        //   headers:{
+        //     "Content-Type":"application/json",
+        //   }
+        // })
+        // let userpostfiledata = await fileresponse.json();
 
         console.log("user Response data " + userpostdata);
-        console.log(mergeform)
-        console.log(Object.keys(mergeform))
+        // console.log(mergeform)
+        // console.log(Object.keys(mergeform))
     }
     
   return (

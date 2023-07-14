@@ -17,7 +17,7 @@ router.get("/get/v1", async(req, res, next) => {
     res.status(200).json(getuserDetail);
 });
 
-console.log("Selected File uploading" + upload);
+// console.log("Selected File uploading" + upload);
 
 router.post("/server/post", upload.single("file"), async(req, res, next)=> {
 
