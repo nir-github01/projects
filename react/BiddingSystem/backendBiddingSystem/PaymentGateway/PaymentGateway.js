@@ -1,12 +1,17 @@
 const  express = require('express');
 const payRouter = express.Router();
 const  Razorpay = require('razorpay');
-const KEY_ID = require('dotenv').config();
-const KEY_SECRET = require('../.config/.env');
+// const { default: orders } = require('razorpay/dist/types/orders');
+require('dotenv').config();
+const KEY_ID =process.env.KEY_ID;
+const KEY_SECRET = process.env.KEY_SECRET;
 
 
+payRouter.get('/orders', (req, res) => {
+    res.send("Get Method calleds"  +"Key Id  " + KEY_ID + " "+ "Key Secret  "+ KEY_SECRET);
+})
 
-payRouter.post('/order', async(req, res) => {
+payRouter.post('/order', (req, res) => {
         
     let  instance = new Razorpay({
         key_id :KEY_ID,
@@ -14,16 +19,23 @@ payRouter.post('/order', async(req, res) => {
     });
 
     let options = {
-        amount: parseFloat(req.body.amount) * 100,
+        amount: req.body.amount * 100,
         currency:"INR",
-        receipt: 'order_rcptid_11',
     };
 
-    instance.orders.create(options, function(err, order){
-        console.log(order);
-    })
+    const order =  instance.orders.create(options);
+res.send(order);
+    // instance.orders.create(options, function(err, order){
+    //     console.log("error" +" "+ err )
+    //     if(err) {
+    //         return res.send({status :502, message:`Server Error ${err}`,})
+    //     }
+    //     return res.send({status:200, message: "Order created", data: order})
+    // })
 
-    res.status(200).send(order);
+    // let MyOrder = instance.orders.create({amount, currency, receipt, notes});
+    // console.log(MyOrder);
+    
 });
 
 payRouter.get('/paymentgateway', (req, res) => {

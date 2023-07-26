@@ -2,9 +2,11 @@
   "name": "backendbiddingsystem",
   "version": "1.0.0",
   "description": "",
-  "main": "Server.js",
+  "main": "index.js",
+  "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start" :"node server1.js",
+    "dev":"nodemon server1.js"
   },
   "keywords": [],
   "author": "",
@@ -16,6 +18,6 @@
     "express-fileupload": "^1.4.0",
     "mongoose": "^7.3.1",
     "multer": "^1.4.5-lts.1",
-    "razorpay": "^2.9.0"
+    "razorpay": "^2.9.1"
   }
 }

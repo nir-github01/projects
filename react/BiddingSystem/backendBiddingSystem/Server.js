@@ -1,6 +1,9 @@
 const express = require("express");
 const server = express();
+const  Razorpay = require('razorpay');
 const cors = require("cors");
+require('dotenv').config();
+const port = process.env.PORT
 
 const bodyParser = require("body-parser");
 
@@ -11,12 +14,12 @@ const  multer = require("multer");
 let router = require("./routes/ServerRoute");
 
 
-
+console.log(port);
 
 let storage = multer.memoryStorage();
 let upload  = multer({storage:storage});
 
-const  payRouter= require("./PaymentGateway/PaymentGateway")
+// const  payRouter= require("./PaymentGateway/PaymentGateway")
 
 
 
@@ -31,7 +34,7 @@ const  payRouter= require("./PaymentGateway/PaymentGateway")
 
 
 //Server start
-const port = process.env.PORT || 4000;
+// const port = process.env.PORT ;
 server.listen(port, (req, res) =>{
     console.timeLog("server is running on this port" + port )
 })
