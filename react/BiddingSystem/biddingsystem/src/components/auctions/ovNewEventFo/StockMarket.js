@@ -1,41 +1,74 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Button from 'react-bootstrap/esm/Button';
-// import useRazorpay from "react-razorpay";
+import useRazorpay from "react-razorpay";
 
 
 const StockMarket = () => {
 
     const [stockMkt, setStockMkt] = useState([]);
-    // const [Razorpay] = useRazorpay();
+    const [Razorpay] = useRazorpay();
 
-    const [key, setKey ] = useState();
     useEffect(() => {
-        // let getStockdata = () => {
-             axios.get("https://api.marketaux.com/v1/news/all?exchanges=NYSE,NASDAQ&api_token=0nliES2eaa5S8oYylGyf3MnIIttlRblPTeClq2jH")
+        let getStockdata = async() => {
+                await  axios.get("https://api.marketaux.com/v1/news/all?exchanges=NYSE,NASDAQ&api_token=0nliES2eaa5S8oYylGyf3MnIIttlRblPTeClq2jH")
                  .then((resp) => {
                       // console.log(res.data.data);
                       setStockMkt(resp.data.data);
                     })
-        // }
-        // getStockdata();
-    }, [])
-
-   useEffect (()=> {
-    let getKey = async() => {
-             await axios.get("http://localhost:8000/api/getKey")
-               .then((res)=> {
-                console.log(res.key);
-                setKey(res.key);
-               })
-    }
-    getKey();
-   }, []);
-
-
+        }
+        getStockdata();
+    }, []);
     let handlePayment = async(amount) => {
+          let {data:{key}} = await axios.get("http://localhost:8000/api/getKey")
+            let {data: {order}} = await axios.post("http://localhost:8000/api/check",{amount})
 
-      const _data = {amount: amount};
+             const options = {
+              key_id: key,
+              amount:order.amount,
+              currency:"INR",
+              name:"Stock market Payment",
+              description:"Bidding payment gatway",
+              order_id: order.id,
+              callback_url:"http://localhost:8000/api/paymentverification",
+              "handler": function (response){
+                  return  response;
+                // console.loog(response.razorpay_payment_id);
+                // console.loog(response.razorpay_order_id);
+                // console.loog(response.razorpay_signature)
+                // setOrderkeys(response)
+                // console.log("Response "+" "+ JSON.stringify(response));
+               },
+                prefill:{
+                  FirstName:"",
+                  LastName:"",
+                  email:"",
+                  contact:"",
+
+                },
+                notes: {
+                    "address":"Razorpay corporate Office",
+                },
+                theme:{
+                  "color": "#A2F5FE",
+                  "width":"max-content",
+
+                },
+             };
+
+             const razor = new window.Razorpay(options);
+             razor.open();
+
+        //      let postpayData = await fetch("http://localhost:8000/api/check", {
+        //       method:"POST",
+        //       body:JSON.stringify(options),
+        //       headers:{
+        //        "Content-Type":"application/json"
+        //       }
+        //  })
+        //  let data = await postpayData.json();
+        //   setOrder(data)
+        //  console.log("data" +" "+ data)
 
     }
   return (

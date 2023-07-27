@@ -17,29 +17,16 @@ import  {Payment} from '../model/paymentModel.js';
 //   });
 // };
 
-export const paymentVerification = async(req, res) => {
-  const {razorpay_order_id, razorpay_payment_id, razorpay_signature} = req.body;
-  
-  const body = razorpay_order_id  + " | " + razorpay_payment_id;
+// export const paymentVerification = async(req, res) => {
 
-  const expectedSignature = crypto
-            .createHmac("emmanuelniry007", process.env.RAZORPAY_API_SECRET)
-            .update(body.toString())
-            .digest("hex");
+//   let generated_signature = hmac_sha256(order_id + "|" + razorpay_payment_id, secret);
 
-            const isAuthentic = expectedSignature === razorpay_signature;
+//   if (generated_signature == razorpay_signature) {
+//    console.log(" payment is successful")
+//   }
 
-            if(isAuthentic)
-            {
-              await Payment.create({
-                razorpay_order_id,
-                razorpay_payment_id,
-                razorpay_signature,
-              });
-              res.redirect(`http://localhost:3000/paymentsuccess?refrence = ${  razorpay_payment_id}`)
-            }else {
-              res.status(400).json({
-                success: false,
-              })
-            }
-} 
+//   var instance = new Razorpay({ key_id: 'YOUR_KEY_ID', key_secret: 'YOUR_SECRET' })
+
+// var { validatePaymentVerification, validateWebhookSignature } = require('./dist/utils/razorpay-utils');
+// validatePaymentVerification({"order_id": razorpayOrderId, "payment_id": razorpayPaymentId }, signature, secret);
+// } 
