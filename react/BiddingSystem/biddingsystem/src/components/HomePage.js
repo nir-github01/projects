@@ -1,8 +1,10 @@
 import React from 'react';
 // import SignInPage from './SignIn/SignInPage'
-// import SignUpPage from './SignUp/SignUpPage';
+import SignUpPage from './SignUp/SignUpPage';
 import NavigationPage from './navigation/NavPage';
 import AcutionPage from './auctions/AcutionPage';
+import UserListPage from './List/UserListPage';
+import SearchListPage from './List/SearchListPage';
 // import NewsPage from './auctions/ovNewEventFo/NewsPage';
 // import NewsDetails from './auctions/ovNewEventFo/NewsDetails';
 // import FormPage from './FormPage';
@@ -14,9 +16,11 @@ function HomePage() {
     {/* <SignInPage/> */}
     {/* <SignUpPage /> */}
     {/* <FormPage /> */}
-    <AcutionPage/>
+    {/* <AcutionPage/> */}
     {/* <NewsPage /> */}
     {/* <NewsDetails /> */}
+    <UserListPage />
+    <SearchListPage />
     </>
   )
 }

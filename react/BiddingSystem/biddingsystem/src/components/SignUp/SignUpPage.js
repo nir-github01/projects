@@ -5,7 +5,7 @@ import { SipmentYearList } from './sipmentTime_Profess/SipmentYear';
 import {citiesList} from "../location/Cities";
 import { stateList } from '../location/States';
 import { professionList, docList } from './sipmentTime_Profess/Profession';
-import { MultiSelect } from "react-multi-select-component";
+// import { MultiSelect } from "react-multi-select-component";
 // import ValidationPage from './validationform/ValidationPage';
 
 
@@ -124,7 +124,7 @@ function SignUpPage() {
           
         // })
 
-        let response = await fetch("http://localhost:4000/rout/server/post", {
+        let response = await fetch("http://localhost:8000/rout/server/post", {
           method:"POST",
           body:JSON.stringify(mergeform),
           headers:{

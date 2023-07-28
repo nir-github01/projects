@@ -1,6 +1,6 @@
 import crypto from "crypto";
 
-import  {Payment} from '../model/paymentModel.js';
+// import  {Payment} from '../model/paymentModel.js';
 // import { parse } from "path";
 
 //  export const checkout = async(req, res) => {

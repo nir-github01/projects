@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Button from 'react-bootstrap/esm/Button';
-import useRazorpay from "react-razorpay";
+// import useRazorpay from "react-razorpay";
 
 
 const StockMarket = () => {
 
     const [stockMkt, setStockMkt] = useState([]);
-    const [Razorpay] = useRazorpay();
+    // const [Razorpay] = useRazorpay();
 
     useEffect(() => {
         let getStockdata = async() => {
@@ -51,7 +51,8 @@ const StockMarket = () => {
                 },
                 theme:{
                   "color": "#A2F5FE",
-                  "width":"max-content",
+                  "width":"100%",
+                  "height":"auto"
 
                 },
              };

@@ -3,13 +3,10 @@ import { instance } from "../server1.js";
 import {  paymentVerification} from "../controllers/payCheckoutController.js";
 // import { paymentVerification } from "../controllers/payVerifyController.js";
  
-const router = express.Router();
+const paymentrouter = express.Router();
 
 
-router.post("/check", async(req, res, next) => {
-
-  const { razorpay_order_id, razorpay_payment_id, razorpay_signature } =
-  req.body;
+paymentrouter .post("/check", async(req, res, next) => {
 
     const options = {
       amount :parseInt(req.body.amount) * 100,
@@ -29,7 +26,7 @@ router.post("/check", async(req, res, next) => {
 })
 
 
-router.post("/refund", async(req, res) => {
+paymentrouter .post("/refund", async(req, res) => {
    
   try {
     //first validate the payment Id then call razorpay API
@@ -46,7 +43,7 @@ router.post("/refund", async(req, res) => {
 }
 
 })
-// router.route("/checkout").post(checkout);
-router.route("/paymentverification").post(paymentVerification);
+// paymentrouter .route("/checkout").post(checkout);
+paymentrouter .route("/paymentverification").post(paymentVerification);
 
-export default router;
+export default paymentrouter ;

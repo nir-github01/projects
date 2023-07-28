@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 let UserFormDataSchema = new mongoose.Schema({
     firstName:{
@@ -76,7 +76,7 @@ let UserFormDataSchema = new mongoose.Schema({
     },
     cities:{
         type:[String],
-        required :[true, 'Select at least one city'],
+      
     }, 
     investmentType:{
         type:String,
@@ -84,7 +84,7 @@ let UserFormDataSchema = new mongoose.Schema({
     },
     selectedFile: {
         documentsUpload:{
-             type: Buffer, required:true 
+             type: Buffer, 
             },
         filename: { type: String,  },
         mimetype: { type: String,  },
@@ -98,7 +98,7 @@ let UserFormDataSchema = new mongoose.Schema({
  
 });
 
-const userDetail =mongoose.model("userDetail", UserFormDataSchema);
+ export const userDetail =mongoose.model("userDetail", UserFormDataSchema);
 
-module.exports = userDetail;
+// module.exports = userDetail;
 
