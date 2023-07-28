@@ -1,8 +1,7 @@
 import './App.css';
-import HomePage from './components/HomePage';
-import {Routes, Route} from 'react-router-dom';
 import * as React from 'react';
 import { useClearCacheCtx } from 'react-clear-cache';
+import RoutePage from './routes/RoutePage';
 
 
 
@@ -10,11 +9,7 @@ function App() {
   const { isLatestVersion, emptyCacheStorage } = useClearCacheCtx()
   return (
     <div className="App">
-     <Routes>
-         <Route exact path='/home' element={<HomePage />}/>
-     </Routes>
-
-    <HomePage />
+     <RoutePage />
     {!isLatestVersion && (
         <p>
           <a
