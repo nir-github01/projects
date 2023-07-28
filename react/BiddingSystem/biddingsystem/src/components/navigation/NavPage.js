@@ -6,6 +6,7 @@ import NavDropdown from 'react-bootstrap/NavDropdown';
 
 function NavigationPage() {
   return (
+    <>
     <Navbar collapseOnSelect expand="lg" className="bg-body-tertiary">
       <Container>
         <Navbar.Brand href="#home">Bidding System</Navbar.Brand>
@@ -34,17 +35,26 @@ function NavigationPage() {
             </Nav.Link>
           </Nav>
           <Nav>
+          <div className='profile-box'>
+          <div>
+          <span  >
+           <img src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR6SfNVulavWHxsBLgsREuUPNrd0cgxrlPnhV3QJw6jcMw3IjfJ&s'  className='profileImage'  alt='profiledp'/></span>
+           </div>
+          <div>
           <NavDropdown>
-          <span  style={{backgroundImage:`url("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR6SfNVulavWHxsBLgsREuUPNrd0cgxrlPnhV3QJw6jcMw3IjfJ&s")`}}></span>
             <Nav.Link href="#deets">LogIN</Nav.Link>
             <Nav.Link eventKey={2} href="#memes">
-          LogOut
+                 LogOut
             </Nav.Link>
             </NavDropdown>
+          </div>
+            </div>
           </Nav>
         </Navbar.Collapse>
       </Container>
     </Navbar>
+    </>
+
   );
 }
 

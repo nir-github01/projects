@@ -10,9 +10,20 @@ import SearchListPage from './List/SearchListPage';
 // import FormPage from './FormPage';
 function HomePage() {
   return (<>
-    <div>HomePage</div>
-    <span  style={{backgroundImage:'url("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR6SfNVulavWHxsBLgsREuUPNrd0cgxrlPnhV3QJw6jcMw3IjfJ&s")'}}></span>
+    <span  style={{backgroundImage:'url("")'}}></span>
      <NavigationPage />
+
+     <div className='HomeContainer'>
+          <div className='homebox1'>
+               <h3>Focus on what matters</h3>
+                <p>Discover top stocks & mutual funds with forecast, analyst ratings, scorecard & more </p>
+          </div>
+          <div className="homebox2">
+               <h5>Everything you need to smartly invest</h5>
+               <span className='stocks_p'>Stock</span>
+               <span className='stocks_p'>News</span>
+          </div>
+     </div>
     {/* <SignInPage/> */}
     {/* <SignUpPage /> */}
     {/* <FormPage /> */}
@@ -21,6 +32,8 @@ function HomePage() {
     {/* <NewsDetails /> */}
     <UserListPage />
     <SearchListPage />
+
+
     </>
   )
 }
