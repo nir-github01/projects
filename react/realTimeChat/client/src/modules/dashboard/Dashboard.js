@@ -31,7 +31,12 @@ const Dashboard = () => {
                           />
                     </div>
                     <div>
-                      <Chating  leftTxt=' Hello bro how are you ............................................. ' rightTxt='Hey bro how are you..........................................'/>
+                      <Chating 
+                       sender='Sender' 
+                       reciever='reciever'
+                        senderTime='senderTime' 
+                        recieverTime='recieverTime'
+                         leftTxt=' Hello bro ' rightTxt='Hey bro '/>
                     </div>
                 </div>
                <div className='w-[25%] h-screen border border-white text-white text-white-500'></div>
