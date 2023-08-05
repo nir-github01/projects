@@ -21,9 +21,9 @@ const SignUpPage = ({
   let handleCheckBox = (event) => {
 
   
-    setTC({
-      [event.target.name]: event.target.checked,
-    })
+    setTC(
+     event.target.checked,
+    )
   }
 
   let submitForm =(event) => {
@@ -38,9 +38,9 @@ const SignUpPage = ({
         <form onSubmit={submitForm}>
                 { !isSignIn && <Input type='text' name='fullName' placeholder='enter name ' label='Full Name'  onChange={handleIpt}/>}
                 { !isSignIn &&<Input type='number' name='phone' placeholder='enter phone ' label='Phone' onChange={handleIpt}/>}
-                <Input type='email' name='email' placeholder='enter email '  label='Email'/>
-                <Input type='password' name={isSignIn ?'current-password' :'password'} placeholder='enter password '  label='New-password' onChange={handleIpt}/>
-                {!isSignIn && <Input type='password' name='password_confirmation' label='Confirm new-password' placeholder='enter confirm password '  onChange={handleIpt} autoComplete/>}
+                <Input type='email' name='email' placeholder='enter email '  label='Email' onChange={handleIpt} autoComplete='username' isRequired='required'/>
+                <Input type='password' name={isSignIn ?'current-password' :'password'} placeholder='enter password '  label='New-password' onChange={handleIpt} autoComplete={isSignIn? 'current-password' : 'new-password'}/>
+                {!isSignIn && <Input type='password' name='password_confirmation' label='Confirm new-password' placeholder='enter confirm password '  onChange={handleIpt}  autoComplete='current-password'/>}
                 <Checkbox  name="tc" value={tc} checked={ tc === true} label={isSignIn ? "Remember me " :  'I agree with the '} sublabel={!isSignIn && ' terms and conditions'} onChange={ handleCheckBox}/>
                 <Button  type='submit' className='btn btn-blue' label={isSignIn ?"SIGNIN" :'SIGNUP'}/>
         </form>
