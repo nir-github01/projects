@@ -3,7 +3,7 @@ import Input from '../../components/InputPage.js'
 import Button from '../../components/Button.js'
 import Checkbox from '../../components/Checkbox.js'
 
-const SignUpPage = ({
+const FormPage= ({
   isSignIn=false,
 }) => {
 
@@ -51,4 +51,4 @@ const SignUpPage = ({
   )
 }
 
-export default SignUpPage
+export default FormPage
