@@ -38,6 +38,7 @@ class userController {
               "token": token,
               userdata
             })
+            next()
           }catch(error){
             console.log(error);
           }
