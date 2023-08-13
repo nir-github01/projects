@@ -1,6 +1,8 @@
 import usersModel from '../models/userModels.js';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
+import ConvoModel from '../models/conversationModel.js';
+import usersMessages from '../models/MessageSchema.js';
 
 
 
@@ -71,14 +73,15 @@ class realChatController {
   //User LogIn
 
   static userLogIn = async(req, res) => {
-    const {email, password} = req.body;
-    if(email && password){
+    
+    const {email, currentPassword} = req.body;
+    if(email && currentPassword){
       try{     
       let checkUser = await usersModel.findOne({email:email});
       if(checkUser){
-       const validPassword = await bcrypt.compare(password, checkUser.password);
+       const validPassword = await bcrypt.compare(currentPassword, checkUser.password);
           if(validPassword){ 
-            let payLoad = {
+            let payLoad = {   
                   userId:checkUser._id,
                   email:email,
             }
@@ -88,6 +91,7 @@ class realChatController {
             res.status(200).send({
               "status":"success",
               "message":"LogIn Successfully",
+              user:checkUser,
               token:token,
             })
           }else{
@@ -114,6 +118,110 @@ class realChatController {
           "status":"failed",
           "messege":"fill all field correctly",
          })    
+    }
+  }
+
+  //Conversation 
+  static userConversation = async(req, res)=> {
+    try{
+
+      const {senderId, recieverId} = req.body;
+      if(senderId && recieverId){
+        const conversation =new ConvoModel({members:[senderId, recieverId], senderId, recieverId})
+
+        let convoData=await conversation.save();
+      
+        res.status(200).send({
+          "status":"success",
+          "message":"Users conversation created successfully",
+          "userConvo":convoData,
+        })
+      }else{
+        res.status(400).json({
+          "status":"failed",
+          "message":"sender Id  or reciever required"
+        })
+      }
+
+    }catch(error){
+      console.log(error);
+    }
+  }
+
+  static oldConversation = async(req, res)=>{
+      try{
+          const userId = req.params.userId;
+
+          const Conversations = await ConvoModel.find({ members : { $in: [userId]}})
+            let conversationUsers =Promise.all(Conversations.map(async(conversation)=> {
+              let recieverId =await conversation.members.find((member) => member !== userId)
+                  let user = await usersModel.findById(recieverId)
+                  return {user:{_id:user._id, fullName:user.fullName, email:user.email, phone:user.phone}, conversationId:conversation._id};
+            }))
+            res.status(200).send({
+              "status":"success",
+              "message":"Old conversation  users",
+              "users":await conversationUsers,
+            })
+      }catch(error){
+        console.log(error)
+      }
+      
+
+  }
+
+  static usersMessages = async(req, res)=>{
+      try{
+         const {conversationId, senderId, message} = req.body;
+         if(!senderId || !message) res.status(200).json([]);
+
+         if(!conversationId && recieverId){
+           const newConversation = new ConvoModel({members:[senderId, recieverId]});
+                await newConversation.save();
+            const newMessages =new usersMessages({conversationId:newConversation._id, senderId, message});
+            const messageData = await newMessages.save();
+            res.status(200).json({
+              "status":"success",
+              "message":"users message send successfully",
+              "messageData":messageData
+            })
+        }else{
+          res.json({
+            "status":"failed",
+            "message":"all field required"
+          })
+        }
+      }catch(error){
+        console.log(error)
+      }
+  }
+
+  static getConversation = async(req, res)=>{
+    try{
+      const conversationId =req.params.conversationId;
+
+      const messages = await usersMessages.find({conversationId});
+       const userMessageData =Promise.all(messages.map(async(message) => {
+            const senderId = message.senderId;
+            const user =await usersModel.findById(senderId);
+            const messagesData = { 
+                       user:{
+                        fullName:user.fullName,
+                        email:user.email,
+                        phone:user.phone
+                      },
+                        messages:messages.message
+                      }
+            return messagesData;
+      }))
+      res.status(200).send({
+        "status":"success",
+        "message":"successfully",
+        "conversation":messages,
+        "userMessagesdata":await userMessageData
+      })
+    }catch(error){
+      console.log(error)
     }
   }
 

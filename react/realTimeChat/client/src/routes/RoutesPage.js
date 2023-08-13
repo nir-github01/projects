@@ -6,17 +6,15 @@ import FormPage from '../modules/form/FormPage';
 
 const RoutesPage = () => {
 
-  const ProtectedRoutes = ({children}) => {
-    const isLoggedIn = localStorage.getItem('user:token') !== null || true;
-      console.log("isLoggedIn  "+ isLoggedIn)  
-
-      console.log('LocalStorage'  +" "+localStorage.getItem('user:token'))
-      if(!isLoggedIn) {
+  const ProtectedRoutes = ({children, auth=false}) => {
+    const isLoggedIn = localStorage.getItem('user:token') !== null || false;
+      // console.log("isLoggedIn  "+ isLoggedIn)  
+      if(!isLoggedIn && auth) {
           return <Navigate to={'/users/login'} />
         }else if(isLoggedIn && ['/user/login', '/user/signup'].includes(window.location.pathname)){
           return <Navigate to={'/'}/>
         } 
-          console.log('children   ' +  children)
+          // console.log('children   ' +  children)
         return children;
       }
   return (
@@ -25,7 +23,7 @@ const RoutesPage = () => {
           <Routes>
                   <Route  path='/' element={
                          <ProtectedRoutes>
-                            <Dashboard />
+                            <Dashboard auth={true}/>
                         </ProtectedRoutes>
                   } />
                   <Route path='/user/login' element={ 

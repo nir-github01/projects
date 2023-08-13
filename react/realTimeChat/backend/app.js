@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 import connectDB  from './config/dbconnection.js';
 import cors from 'cors';
+import bodyParser from 'body-parser';
 // import bodyParser from 'body-parser';
 
 import usersRoutes from './routes/userRoutes.js';
@@ -10,6 +11,7 @@ import usersRoutes from './routes/userRoutes.js';
 const app = express();
 const port = process.env.PORT;
 const mongodburl = process.env.MONGODB_URL;
+
 
 //database connection 
  connectDB(mongodburl);
@@ -20,6 +22,8 @@ const mongodburl = process.env.MONGODB_URL;
  //json 
  app.use(express.json());
  app.use(express.json({extended:false}))
+ app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
  //Body parser
 

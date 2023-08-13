@@ -6,10 +6,12 @@ const router = express.Router();
 
 router.post('/register', realChatController.userRegistartion);
 router.post ('/login', realChatController.userLogIn);
-router.get('/get', (req, res) => {
-  res.send('get method')
-})
-router.get('/usersdetails', realChatController.userDetails);
 
+router.post('/conversation', realChatController.userConversation);
+router.post('/message', realChatController.usersMessages);
+
+router.get('/usersdetails', realChatController.userDetails);
+router.get('/conversation/:userId', realChatController.oldConversation);
+router.get('/message/:conversationId', realChatController.getConversation)
 
 export default router;

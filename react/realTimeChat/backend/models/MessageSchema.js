@@ -5,14 +5,14 @@ let messageSchema = new mongoose.Schema({
       conversationId:{
         type:String
       },
-      sender:{
+      senderId:{
         type:String,
       },
-      text:{
+      message:{
         type:String,
       },
 }, {timestamps:true});
 
-let userMsgModel = mongoose.model('userMsgs', messageSchema);
+let usersMessages = mongoose.model('userMessage', messageSchema);
 
-export default userMsgModel;
+export default usersMessages;
