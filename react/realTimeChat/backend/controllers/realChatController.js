@@ -11,7 +11,7 @@ class realChatController {
   //User Registration 
 
   static userRegistartion = async (req, res) => {
-    const {fullName, email, phone, password, password_confirmation, tc} = req.body;
+    const {fullName, email, gender, age, phone, password, password_confirmation, tc} = req.body;
     if(fullName && email && phone && password && password_confirmation, tc){
         let checkExistUser = await usersModel.findOne({email:email})
         if(checkExistUser){
@@ -26,6 +26,8 @@ class realChatController {
                       let registerUser = new usersModel({
                         fullName:fullName,
                         email:email,
+                        gender:gender,
+                        age: age,
                         phone:phone,
                         password:hashPassword,
                         tc:tc
@@ -151,12 +153,23 @@ class realChatController {
   static oldConversation = async(req, res)=>{
       try{
           const userId = req.params.userId;
-
+            
           const Conversations = await ConvoModel.find({ members : { $in: [userId]}})
             let conversationUsers =Promise.all(Conversations.map(async(conversation)=> {
               let recieverId =await conversation.members.find((member) => member !== userId)
-                  let user = await usersModel.findById(recieverId)
-                  return {user:{_id:user._id, fullName:user.fullName, email:user.email, phone:user.phone}, conversationId:conversation._id};
+                  let users = await usersModel.findById(recieverId)
+                  let data = {
+                     user:{
+                      userId:users._id,
+                      fullName:users.fullName, 
+                      email:users.email, 
+                      phone:users.phone,
+                      gender:users.gender,
+                      age:users.age
+                     },
+                     conversationId:conversation._id
+                  }
+                  return data;
             }))
             res.status(200).send({
               "status":"success",
@@ -172,18 +185,18 @@ class realChatController {
 
   static usersMessages = async(req, res)=>{
       try{
-         const {conversationId, senderId, message} = req.body;
+         const {conversationId, senderId, message, recieverId} = req.body;
          if(!senderId || !message) res.status(200).json([]);
 
-         if(!conversationId && recieverId){
+         if(conversationId){
            const newConversation = new ConvoModel({members:[senderId, recieverId]});
                 await newConversation.save();
             const newMessages =new usersMessages({conversationId:newConversation._id, senderId, message});
             const messageData = await newMessages.save();
             res.status(200).json({
               "status":"success",
-              "message":"users message send successfully",
-              "messageData":messageData
+              "message":"user send  message successfully",
+               messageData
             })
         }else{
           res.json({
@@ -200,8 +213,10 @@ class realChatController {
     try{
       const conversationId =req.params.conversationId;
 
-      const messages = await usersMessages.find({conversationId});
+      const messages = await usersMessages.find();
+    
        const userMessageData =Promise.all(messages.map(async(message) => {
+           const conversationId =await message.conversationId;
             const senderId = message.senderId;
             const user =await usersModel.findById(senderId);
             const messagesData = { 

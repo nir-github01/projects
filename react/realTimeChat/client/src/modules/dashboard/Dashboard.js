@@ -4,92 +4,113 @@ import UsersProfile from "../../components/UsersProfile";
 import Chating from "../../components/Chating";
 
 const Dashboard = () => {
-       const [user,  setUser] = useState(JSON.parse(localStorage.getItem('user:details')));
-       const [userConversation, setUserConversation] = useState([]);
+  const [user, setUser] = useState( 
+        JSON.parse(localStorage.getItem("user:details"))
+      );
+  const [userConversation, setUserConversation] = useState([]);
+  const [conversationIds, setConversationIds] = useState();
 
-       useEffect(() => {
-         let loggedInUser = JSON.parse(localStorage.getItem("user:details"));
-         let getConversation = async () => {
-           let getResponse = await fetch(
-             `http://localhost:8000/api/user/conversation/${loggedInUser._id} `,
-             {
-               method: "GET",
-               headers: {
-                 "Content-Type": "application/json",
-               },
-             }
-           );
-           let Conversation = await getResponse.json();
-            setUserConversation(Conversation)
-         
-         };
-         getConversation();
-       }, []);
+   useEffect(() => {
+    try{
+      let loggedInUser = JSON.parse(localStorage.getItem("user:details"));
+      let getConversation = async () => {
+        let getResponse = await fetch(
+          `http://localhost:8000/api/user/conversation/${loggedInUser?._id} `,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        let Conversation = await getResponse.json();
+          setUserConversation(Conversation.users)
+      };
+      getConversation();
+    }catch(error){
+      console.log(error)
+    }
+   }, []);
 
-       let fetchMessages =async(conversationId)=> {
-        let responseMessage = await fetch(`http://localhost:8000/api/user/message/${conversationId}`, {
-                method:"GET",
-                headers:{
-                        "Content-Type":"application/json"
-                }
-        })
-        let messages = await responseMessage.json();
-        console.log(conversationId)
-       }
+  let fetchMessages = async (conversationId) => {
+    let responseMessage = await fetch(
+      `http://localhost:8000/api/user/message/${conversationId}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    let messages = await responseMessage.json();
+    console.log(messages);
+  };
+
   return (
     <div className="w-screen flex">
-      <div className="w-[25%] h-screen border border-[#010b27] text-white text-white-500">
+      <div className="w-[25%]  border border-[#010b27] text-white text-white-500">
         <div className="mb-4">
-          <ProfileImage id="text-justify ml-6" userName={user.fullName || user.name}/>
+          <ProfileImage id="text-justify ml-6" userName={user.fullName}/>
         </div>
         <hr />
         <div className="h-screen overflow-y-auto">
           <h3 className="text-justify text-xl p-5 mb-5">Message</h3>
-          {userConversation.length > 0 ?  userConversation.map((userData, idx)=>{return (
-                <div className="bg-[#172533] text-justify flex items-center p-2" key={idx} onClick={()=>fetchMessages(userConversation.conversationId)}>
-                        <div>
-                                <img
-                                        className="cursor-pointer ml-2 rounded-full border borde-gray-light w-[30%]"
-                                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRBwgu1A5zgPSvfE83nurkuzNEoXs9DMNr8Ww&usqp=CAU"
-                                        alt="image description"
-                                />
-                        </div>
-                        <div className="relative right-[40%] ">
-                                <span className=" cursor-pointer">{userData.user.fullName || userData.user.name}</span>
-                                <br />
-                                <span className=" "> Female</span>
-                                <br />
-                                <span className=" "> 23 </span>
-                                <br />
-                                <span className=" "> online </span>
-                        </div>
-                        <div>
-                                <span className=" mr-8" id="">
-                                        <svg
-                                        className="w-8 h-8 bg-[#030120] p-1 text-white-800 shadow rounded-full  dark:text-white"
-                                        aria-hidden="true"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        fill="none"
-                                        viewBox="0 0 18 18"
-                                        >
-                                        <path
-                                        stroke="currentColor"
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        strokeWidth="2"
-                                        d="m16.344 12.168-1.4-1.4a1.98 1.98 0 0 0-2.8 0l-.7.7a1.98 1.98 0 0 1-2.8 0l-2.1-2.1a1.98 1.98 0 0 1 0-2.8l.7-.7a1.981 1.981 0 0 0 0-2.8l-1.4-1.4a1.828 1.828 0 0 0-2.8 0C-.638 5.323 1.1 9.542 4.78 13.22c3.68 3.678 7.9 5.418 11.564 1.752a1.828 1.828 0 0 0 0-2.804Z"
-                                        />
-                                        </svg>
-                                </span>
-                        </div>
-        
+          {userConversation.length > 0 ? (
+            userConversation.map((userData, idx) => {
+              return (
+                <div  key={idx}>
+                <div
+                  className="bg-[#172533] text-justify flex items-center p-2"
+                  onClick={()=>fetchMessages(userData.conversationId)}
+                >
+                  <div>
+                    <img
+                      className="cursor-pointer ml-2 rounded-full border borde-gray-light w-[30%]"
+                      src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRBwgu1A5zgPSvfE83nurkuzNEoXs9DMNr8Ww&usqp=CAU"
+                      alt="image description"
+                    />
+                  </div>
+                  <div className="relative right-[40%] ">
+                    <span className=" cursor-pointer">
+                      {userData.user.fullName || userData.user.name}
+                    </span>
+                    <br />
+                    <span className=" "> Female</span>
+                    <br />
+                    <span className=" "> 23 </span>
+                    <br />
+                    <span className=" "> online </span>
+                  </div>
+                  <div>
+                    <span className=" mr-8" id="">
+                      <svg
+                        className="w-8 h-8 bg-[#030120] p-1 text-white-800 shadow rounded-full  dark:text-white"
+                        aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 18 18"
+                      >
+                        <path
+                          stroke="currentColor"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
+                          d="m16.344 12.168-1.4-1.4a1.98 1.98 0 0 0-2.8 0l-.7.7a1.98 1.98 0 0 1-2.8 0l-2.1-2.1a1.98 1.98 0 0 1 0-2.8l.7-.7a1.981 1.981 0 0 0 0-2.8l-1.4-1.4a1.828 1.828 0 0 0-2.8 0C-.638 5.323 1.1 9.542 4.78 13.22c3.68 3.678 7.9 5.418 11.564 1.752a1.828 1.828 0 0 0 0-2.804Z"
+                        />
+                      </svg>
+                    </span>
+                  </div>
                 </div>
-                
-                )}) : <div> No Conversations  </div>}
-                <hr/>     
+                <hr />
+                </div>
+              );
+            })
+          ) : (
+            <div> No Conversations </div>
+          )}
         </div>
       </div>
-      <div className="w-[50%] h-screen  border-[#010b27] text-white text-white-500">
+      <div className="w-[50%] border-[#010b27] text-white text-white-500">
         <div>
           <div className="bg-[#01162b] rounded-full m-5 p-2 mb-5">
             <UsersProfile
@@ -165,7 +186,7 @@ const Dashboard = () => {
           />
         </div>
         <hr />
-        <div className="h-screen overflow-y-scroll">
+        <div className="h-screen overflow-y-auto">
           <div className=" bg-[#070522] p-1  text-justify">
             <UsersProfile
               mainClass={"flex items-center mt-5 ml-6  text-[14px] m-3"}
