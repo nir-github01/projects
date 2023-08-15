@@ -128,8 +128,8 @@ class realChatController {
     try{
 
       const {senderId, recieverId} = req.body;
-      if(senderId && recieverId){
-        const conversation =new ConvoModel({members:[senderId, recieverId], senderId, recieverId})
+      if(senderId && recieverId ){
+        const conversation =new ConvoModel({members:[senderId, recieverId]})
 
         let convoData=await conversation.save();
       
@@ -157,6 +157,7 @@ class realChatController {
           const Conversations = await ConvoModel.find({ members : { $in: [userId]}})
             let conversationUsers =Promise.all(Conversations.map(async(conversation)=> {
               let recieverId =await conversation.members.find((member) => member !== userId)
+                 if(recieverId){
                   let users = await usersModel.findById(recieverId)
                   let data = {
                      user:{
@@ -170,11 +171,12 @@ class realChatController {
                      conversationId:conversation._id
                   }
                   return data;
+                }
             }))
             res.status(200).send({
               "status":"success",
               "message":"Old conversation  users",
-              "users":await conversationUsers,
+              "users":await conversationUsers  ,
             })
       }catch(error){
         console.log(error)
@@ -216,18 +218,23 @@ class realChatController {
       const messages = await usersMessages.find();
     
        const userMessageData =Promise.all(messages.map(async(message) => {
-           const conversationId =await message.conversationId;
             const senderId = message.senderId;
-            const user =await usersModel.findById(senderId);
-            const messagesData = { 
-                       user:{
-                        fullName:user.fullName,
-                        email:user.email,
-                        phone:user.phone
-                      },
-                        messages:messages.message
-                      }
-            return messagesData;
+            if(senderId){
+                  const users =await usersModel.findById(senderId);
+                  if(users){
+                    const messagesData = { 
+                            user:{
+                              fullName:users.fullName,
+                              email:users.email,
+                              phone:users.phone,
+                              gender:users.gender,
+                            },
+                              messages:messages.message
+                            }
+                      
+                    return  messagesData;
+                  }
+             }
       }))
       res.status(200).send({
         "status":"success",

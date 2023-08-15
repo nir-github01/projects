@@ -61,7 +61,7 @@ const Dashboard = () => {
                 <div  key={idx}>
                 <div
                   className="bg-[#172533] text-justify flex items-center p-2"
-                  onClick={()=>fetchMessages(userData.conversationId)}
+                 
                 >
                   <div>
                     <img
@@ -82,7 +82,7 @@ const Dashboard = () => {
                     <span className=" "> online </span>
                   </div>
                   <div>
-                    <span className=" mr-8" id="">
+                    <span className=" mr-8 cursor-pointer" id=""  onClick={()=>fetchMessages(userData.conversationId)}>
                       <svg
                         className="w-8 h-8 bg-[#030120] p-1 text-white-800 shadow rounded-full  dark:text-white"
                         aria-hidden="true"

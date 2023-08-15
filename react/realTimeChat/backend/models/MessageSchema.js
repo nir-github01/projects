@@ -8,6 +8,9 @@ let messageSchema = new mongoose.Schema({
       senderId:{
         type:String,
       },
+      recieverId:{
+        type:String,
+      },
       message:{
         type:String,
       },

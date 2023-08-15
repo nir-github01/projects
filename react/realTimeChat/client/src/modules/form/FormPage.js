@@ -42,6 +42,7 @@ const FormPage = ({ isSignIn = false }) => {
       );
       let data = await response.json();
       setMessages(data.message);
+      console.log(data)
       if (data.token) {
         let setToken = localStorage.setItem("user:token", data.token);
         let userData = localStorage.setItem(
