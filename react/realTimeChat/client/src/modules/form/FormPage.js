@@ -10,7 +10,7 @@ const FormPage = ({ isSignIn = false }) => {
   const [form, setForm] = useState("");
   const [tc, setTC] = useState();
   const [mergeform, setMergeForm] = useState({});
-  const [messages, setMessages] = useState();
+  const [error, setError] = useState();
 
   //Navigation
   const navigate = useNavigate();
@@ -41,11 +41,10 @@ const FormPage = ({ isSignIn = false }) => {
         }
       );
       let data = await response.json();
-      setMessages(data.message);
-      console.log(data)
+      setError(data.message);
       if (data.token) {
-        let setToken = localStorage.setItem("user:token", data.token);
-        let userData = localStorage.setItem(
+        localStorage.setItem("user:token", data.token);
+        localStorage.setItem(
           "user:details",
           JSON.stringify(data.user)
         );
@@ -63,6 +62,11 @@ const FormPage = ({ isSignIn = false }) => {
           {isSignIn
             ? "SignIn now to explore more"
             : "SignUp now to get started"}
+        </div>
+        <div className='m-2'>
+          <ul>
+             <li> {error ? error.message : ""}</li>
+          </ul>
         </div>
         <form onSubmit={submitForm}>
           {!isSignIn && (

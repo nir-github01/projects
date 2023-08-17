@@ -18,7 +18,7 @@ const Checkbox = ({ name, label, sublabel, id, value, onChange }) => {
         >
           {label}
           <a
-            href="#"
+            href="#blank"
             className="text-blue-600 dark:text-blue-500 hover:underline"
           >
             {sublabel}

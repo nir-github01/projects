@@ -24,7 +24,7 @@ const UsersProfile = ({
             width={width}
             height={height}
             src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRBwgu1A5zgPSvfE83nurkuzNEoXs9DMNr8Ww&usqp=CAU"
-            alt="image description"
+            alt=" description"
           ></img>
         </div>
         <div className={pClass} id={pId}>

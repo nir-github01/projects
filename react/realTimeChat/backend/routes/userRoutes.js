@@ -7,11 +7,11 @@ const router = express.Router();
 router.post('/register', realChatController.userRegistartion);
 router.post ('/login', realChatController.userLogIn);
 
-router.post('/conversation', realChatController.userConversation);
-router.post('/message', realChatController.usersMessages);
+router.post('/conversation', realChatController.newUserConversation);
+router.post('/message', realChatController.postUsersMessages);
 
 router.get('/usersdetails', realChatController.userDetails);
-router.get('/conversation/:userId', realChatController.oldConversation);
-router.get('/message/:conversationId', realChatController.getConversation)
+router.get('/usersconversation/:userId', realChatController.getUserConversation);
+router.get('/message/:conversationId', realChatController.getConversationMsg)
 
 export default router;

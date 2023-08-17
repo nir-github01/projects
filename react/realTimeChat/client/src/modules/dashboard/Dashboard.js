@@ -1,21 +1,23 @@
 import React, { useState, useEffect } from "react";
 import ProfileImage from "../../components/ProfileImage";
 import UsersProfile from "../../components/UsersProfile";
-import Chating from "../../components/Chating";
+// import Chating from "../../components/Chating";
 
 const Dashboard = () => {
-  const [user, setUser] = useState( 
-        JSON.parse(localStorage.getItem("user:details"))
-      );
+  const [user, setUser] = useState(
+    JSON.parse(localStorage.getItem("user:details"))
+  );
   const [userConversation, setUserConversation] = useState([]);
-  const [conversationIds, setConversationIds] = useState();
+  const [messages, setMessages] = useState([]);
+  const [allUser, setAllUser] = useState([]);
 
-   useEffect(() => {
-    try{
+  useEffect(() => {
+    try {
       let loggedInUser = JSON.parse(localStorage.getItem("user:details"));
+      // setUser(loggedInUser);
       let getConversation = async () => {
         let getResponse = await fetch(
-          `http://localhost:8000/api/user/conversation/${loggedInUser?._id} `,
+          `http://localhost:8000/api/user/usersconversation/${loggedInUser?._id} `,
           {
             method: "GET",
             headers: {
@@ -24,13 +26,14 @@ const Dashboard = () => {
           }
         );
         let Conversation = await getResponse.json();
-          setUserConversation(Conversation.users)
+        setUserConversation(Conversation);
+        console.log(Conversation)
       };
       getConversation();
-    }catch(error){
-      console.log(error)
+    } catch (error) {
+      console.log(error);
     }
-   }, []);
+  }, []);
 
   let fetchMessages = async (conversationId) => {
     let responseMessage = await fetch(
@@ -42,66 +45,84 @@ const Dashboard = () => {
         },
       }
     );
-    let messages = await responseMessage.json();
-    console.log(messages);
+    let messagesdata = await responseMessage.json();
+    setMessages(messagesdata);
+    console.log( messagesdata)
   };
 
+  useEffect(() => {
+    let fetchUsers = async () => {
+      let response = await fetch(
+        "http://localhost:8000/api/user/usersdetails",
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      let users = await response.json();
+      setAllUser(users);
+    };
+
+    fetchUsers();
+  }, []);
   return (
     <div className="w-screen flex">
       <div className="w-[25%]  border border-[#010b27] text-white text-white-500">
         <div className="mb-4">
-          <ProfileImage id="text-justify ml-6" userName={user.fullName}/>
+          <ProfileImage id="text-justify ml-6" userName={user.fullName} />
         </div>
         <hr />
         <div className="h-screen overflow-y-auto">
           <h3 className="text-justify text-xl p-5 mb-5">Message</h3>
-          {userConversation.length > 0 ? (
+          {userConversation  ? (
             userConversation.map((userData, idx) => {
               return (
-                <div  key={idx}>
-                <div
-                  className="bg-[#172533] text-justify flex items-center p-2"
-                 
-                >
-                  <div>
-                    <img
-                      className="cursor-pointer ml-2 rounded-full border borde-gray-light w-[30%]"
-                      src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRBwgu1A5zgPSvfE83nurkuzNEoXs9DMNr8Ww&usqp=CAU"
-                      alt="image description"
-                    />
+                <div key={ idx }>
+                  <div
+                    className="bg-[#172533] text-justify flex items-center p-2"
+                    onClick={() => fetchMessages(userData.conversationId)}
+                  >
+                    <div>
+                      <img
+                        className="cursor-pointer ml-2 rounded-full border borde-gray-light w-[30%]"
+                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRBwgu1A5zgPSvfE83nurkuzNEoXs9DMNr8Ww&usqp=CAU"
+                        alt=" description"
+                      />
+                    </div>
+                    <div className="relative right-[40%] ">
+                      <span className=" cursor-pointer">
+                        
+                      </span>
+                      <br />
+                      <span className=" "></span>
+                      <br />
+                      <span className=" "> </span>
+                      <br />
+                      <span className=" "> online </span>
+                    </div>
+                    <div>
+                      <span className=" mr-8 cursor-pointer" id="">
+                        <svg
+                          className="w-8 h-8 bg-[#030120] p-1 text-white-800 shadow rounded-full  dark:text-white"
+                          aria-hidden="true"
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 18 18"
+                        >
+                          <path
+                            stroke="currentColor"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
+                            d="m16.344 12.168-1.4-1.4a1.98 1.98 0 0 0-2.8 0l-.7.7a1.98 1.98 0 0 1-2.8 0l-2.1-2.1a1.98 1.98 0 0 1 0-2.8l.7-.7a1.981 1.981 0 0 0 0-2.8l-1.4-1.4a1.828 1.828 0 0 0-2.8 0C-.638 5.323 1.1 9.542 4.78 13.22c3.68 3.678 7.9 5.418 11.564 1.752a1.828 1.828 0 0 0 0-2.804Z"
+                          />
+                        </svg>
+                      </span>
+                    </div>
                   </div>
-                  <div className="relative right-[40%] ">
-                    <span className=" cursor-pointer">
-                      {userData.user.fullName || userData.user.name}
-                    </span>
-                    <br />
-                    <span className=" "> Female</span>
-                    <br />
-                    <span className=" "> 23 </span>
-                    <br />
-                    <span className=" "> online </span>
-                  </div>
-                  <div>
-                    <span className=" mr-8 cursor-pointer" id=""  onClick={()=>fetchMessages(userData.conversationId)}>
-                      <svg
-                        className="w-8 h-8 bg-[#030120] p-1 text-white-800 shadow rounded-full  dark:text-white"
-                        aria-hidden="true"
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 18 18"
-                      >
-                        <path
-                          stroke="currentColor"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth="2"
-                          d="m16.344 12.168-1.4-1.4a1.98 1.98 0 0 0-2.8 0l-.7.7a1.98 1.98 0 0 1-2.8 0l-2.1-2.1a1.98 1.98 0 0 1 0-2.8l.7-.7a1.981 1.981 0 0 0 0-2.8l-1.4-1.4a1.828 1.828 0 0 0-2.8 0C-.638 5.323 1.1 9.542 4.78 13.22c3.68 3.678 7.9 5.418 11.564 1.752a1.828 1.828 0 0 0 0-2.804Z"
-                        />
-                      </svg>
-                    </span>
-                  </div>
-                </div>
-                <hr />
+                  <hr />
                 </div>
               );
             })
@@ -141,14 +162,40 @@ const Dashboard = () => {
           </div>
         </div>
         <div>
-          <Chating
-            sender="Sender"
-            reciever="reciever"
-            senderTime="senderTime"
-            recieverTime="recieverTime"
-            leftTxt=" Hello bro "
-            rightTxt="Hey bro .hello how are you and what ...."
-          />
+          <div className="h-screen border border-[#010b27] w-full overflow-x-auto overflow-y-auto">
+            {messages ? 
+            messages.map(({msg, user:{id}={}, index}) => {
+                if(msg.user.userId){
+                  return (
+                      <div className="mt-1 mb-1 text-justify text-white max-w-[45%] p-4" key={index}>
+                        <p className="text-justify text-[12px] text-[#a3020a] shadow p-[1px] bg-[#132435] w-fit p-1 mb-2 rounded-full">
+                          {msg.user.fullName}
+                        </p>
+                        <p className="break-words text-justify text-[12px] bg-[#132435] p-1 w-fit rounded-tr-xl rounded-bl-xl rounded-br rounded-br-lg">
+                          { msg.messages} {id} 
+                        </p>
+                        <p className="cursor-not-allowed text-center text-[#a3020a] text-[10px] bg-[#132435] w-fit p-1 mt-2 rounded-full ">
+                          senderTime
+                        </p>
+                      </div>
+                  )
+                }else{
+                  return(
+                
+                    <div className="mt-1 mb-1 text-black text-justify max-w-[45%] ml-auto">
+                      <p className="text-justify text-[12px] text-[#a3020a] shadow bg-[#132435] w-fit p-1 mb-2 rounded-full">
+                        reciever
+                      </p>
+                      <p className="text-justify text-[12px] bg-[#3194f8] h-auto break-words w-fit p-[4px]  rounded-tl-xl rounded-bl-xl rounded-br rounded-br-xl">
+                        Hey dear .....
+                      </p>
+                      <p className="cursor-not-allowed text-center text-[#a3020a] text-[10px] bg-[#132435] w-fit p-1 mt-2 rounded-full">
+                        recieverTime
+                      </p>
+                    </div>
+                )}
+            }): <div className="text-white-500">No Conversation </div> }
+          </div>
         </div>
         <div className="relative">
           <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none"></div>
@@ -186,18 +233,54 @@ const Dashboard = () => {
           />
         </div>
         <hr />
-        <div className="h-screen overflow-y-auto">
-          <div className=" bg-[#070522] p-1  text-justify">
-            <UsersProfile
-              mainClass={"flex items-center mt-5 ml-6  text-[14px] m-3"}
-              pClass={"ml-2"}
-              user="user"
-              status="online"
-              width={35}
-              height={35}
-            />
-          </div>
-          <hr />
+        <div className="h-screen mr-3 overflow-y-auto">
+          {allUser ? (
+            allUser.map((user, idx) => {
+              return (
+                <div key={idx}>
+                  <div
+                    className="flex items-center bg-[#070522] text-justify m-5 p-1"
+                  >
+                    <div>
+                      <img
+                        className="cursor-pointer rounded-full border borde-gray-light "
+                        width={"55"}
+                        height={"55"}
+                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRBwgu1A5zgPSvfE83nurkuzNEoXs9DMNr8Ww&usqp=CAU"
+                        alt=" description"
+                      />
+                    </div>
+                    <div className="">
+                      <p className="ml-[6px] cursor-pointer text-[12px]">
+                        {user.fullName}
+                      </p>
+                      <p className="ml-[6px] text-[12px]">online</p>
+                    </div>
+                    <span className="ml-6">
+                      <svg
+                        className="w-8 h-8 bg-[#030120] p-1 text-white-800 shadow rounded-full  dark:text-white"
+                        aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 18 18"
+                      >
+                        <path
+                          stroke="currentColor"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
+                          d="m16.344 12.168-1.4-1.4a1.98 1.98 0 0 0-2.8 0l-.7.7a1.98 1.98 0 0 1-2.8 0l-2.1-2.1a1.98 1.98 0 0 1 0-2.8l.7-.7a1.981 1.981 0 0 0 0-2.8l-1.4-1.4a1.828 1.828 0 0 0-2.8 0C-.638 5.323 1.1 9.542 4.78 13.22c3.68 3.678 7.9 5.418 11.564 1.752a1.828 1.828 0 0 0 0-2.804Z"
+                        />
+                      </svg>
+                    </span>
+                  </div>
+                  <hr />
+                </div>
+              );
+            })
+          ) : (
+            <div className="text-white-600"> No Users</div>
+          )}
         </div>
       </div>
     </div>

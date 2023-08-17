@@ -124,7 +124,7 @@ class realChatController {
   }
 
   //Conversation 
-  static userConversation = async(req, res)=> {
+  static newUserConversation = async(req, res)=> {
     try{
 
       const {senderId, recieverId} = req.body;
@@ -150,7 +150,7 @@ class realChatController {
     }
   }
 
-  static oldConversation = async(req, res)=>{
+  static getUserConversation = async(req, res)=>{
       try{
           const userId = req.params.userId;
             
@@ -158,26 +158,27 @@ class realChatController {
             let conversationUsers =Promise.all(Conversations.map(async(conversation)=> {
               let recieverId =await conversation.members.find((member) => member !== userId)
                  if(recieverId){
-                  let users = await usersModel.findById(recieverId)
-                  let data = {
-                     user:{
-                      userId:users._id,
-                      fullName:users.fullName, 
-                      email:users.email, 
-                      phone:users.phone,
-                      gender:users.gender,
-                      age:users.age
-                     },
-                     conversationId:conversation._id
+                    let users = await usersModel.findById(recieverId)
+                    if(users){
+                        let data = {
+                          user:{
+                            userId:users._id,
+                            fullName:users.fullName, 
+                            email:users.email, 
+                            phone:users.phone,
+                            gender:users.gender,
+                            age:users.age
+                          },
+                          conversationId:conversation._id
+                        }
+                        return data;
                   }
-                  return data;
+                }else if(recieverId === null){
+                  console.log("deleteUsers")
                 }
+                console.log(await conversationUsers)
             }))
-            res.status(200).send({
-              "status":"success",
-              "message":"Old conversation  users",
-              "users":await conversationUsers  ,
-            })
+            res.status(200).send(await conversationUsers)
       }catch(error){
         console.log(error)
       }
@@ -185,21 +186,23 @@ class realChatController {
 
   }
 
-  static usersMessages = async(req, res)=>{
+  static postUsersMessages = async(req, res)=>{
       try{
          const {conversationId, senderId, message, recieverId} = req.body;
-         if(!senderId || !message) res.status(200).json([]);
+        //  if(!senderId || !message) res.status(200).json([]);
+        if(conversationId && senderId){
+             const continueMessage = new usersMessages({conversationId, senderId, message})
+             const messageData = await continueMessage.save();
+             console.log("If Messages");
+             res.status(200).json(messageData) 
 
-         if(conversationId){
+        }else if(conversationId ==='new' && recieverId ){
            const newConversation = new ConvoModel({members:[senderId, recieverId]});
                 await newConversation.save();
-            const newMessages =new usersMessages({conversationId:newConversation._id, senderId, message});
+            const newMessages =new usersMessages({conversationId:newConversation._id, senderId, message, recieverId});
             const messageData = await newMessages.save();
-            res.status(200).json({
-              "status":"success",
-              "message":"user send  message successfully",
-               messageData
-            })
+            console.log("Else If Messages")
+            res.status(200).json(messageData)
         }else{
           res.json({
             "status":"failed",
@@ -211,37 +214,36 @@ class realChatController {
       }
   }
 
-  static getConversation = async(req, res)=>{
+  static getConversationMsg = async(req, res)=>{
     try{
       const conversationId =req.params.conversationId;
 
-      const messages = await usersMessages.find();
-    
+      const messages = await usersMessages.find({conversationId});
+       
        const userMessageData =Promise.all(messages.map(async(message) => {
-            const senderId = message.senderId;
-            if(senderId){
-                  const users =await usersModel.findById(senderId);
-                  if(users){
-                    const messagesData = { 
-                            user:{
-                              fullName:users.fullName,
-                              email:users.email,
-                              phone:users.phone,
-                              gender:users.gender,
-                            },
-                              messages:messages.message
-                            }
-                      
-                    return  messagesData;
-                  }
-             }
+            if(message.conversationId === conversationId){
+              const senderId = message.senderId;
+                if(senderId){
+                      const users =await usersModel.findById(senderId);
+                      if(users){
+                        // console.log(message)
+                        const messagesData = { 
+                                user:{
+                                  userId:users._id,
+                                  fullName:users.fullName,
+                                  email:users.email,
+                                  phone:users.phone,
+                                  gender:users.gender,
+                                },
+                                  messages:message.message
+                                }
+                          
+                        return  messagesData;
+                      }
+                }
+            }
       }))
-      res.status(200).send({
-        "status":"success",
-        "message":"successfully",
-        "conversation":messages,
-        "userMessagesdata":await userMessageData
-      })
+      res.status(200).send(await userMessageData)
     }catch(error){
       console.log(error)
     }
@@ -250,11 +252,7 @@ class realChatController {
   static userDetails = async(req, res) => {
        try{
             let users = await usersModel.find();
-            res.send({
-              "status":"success",
-              "message":"User datas",
-              "users":users
-            })
+            res.send(users)
        } catch(error){
         console.log(error);
        }
