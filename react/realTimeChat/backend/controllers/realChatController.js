@@ -189,22 +189,28 @@ class realChatController {
   static postUsersMessages = async(req, res)=>{
       try{
          const {conversationId, senderId, message, recieverId} = req.body;
-        //  if(!senderId || !message) res.status(200).json([]);
-        if(conversationId && senderId){
-             const continueMessage = new usersMessages({conversationId, senderId, message})
+        console.log(req.body)
+        if(!senderId || !message) return res.status(200).json([]);
+        if(conversationId && recieverId && senderId && message){
+             const continueMessage = new usersMessages({conversationId, senderId, message, recieverId})
              const messageData = await continueMessage.save();
-             console.log("If Messages");
-             res.status(200).json(messageData) 
+            //  console.log(messageData);
+            return res.status(200).json(messageData) 
 
-        }else if(conversationId ==='new' && recieverId ){
-           const newConversation = new ConvoModel({members:[senderId, recieverId]});
-                await newConversation.save();
-            const newMessages =new usersMessages({conversationId:newConversation._id, senderId, message, recieverId});
-            const messageData = await newMessages.save();
-            console.log("Else If Messages")
-            res.status(200).json(messageData)
+        }else if(conversationId === 'new' && recieverId && senderId){
+           let newConversation = new ConvoModel({members:[senderId, recieverId]});
+            let newConversations = await newConversation.save();
+            console.log(newConversations)
+            return res.send(newConversations)
+            // console.log(req.body)
+            // if(message){
+            //     const newMessages =new usersMessages({conversationId:newConversation._id, senderId, message, recieverId});
+            //     const messageData = await newMessages.save();
+            //     console.log(messageData)
+            //   return res.status(200).json(messageData)
+            // }
         }else{
-          res.json({
+         return res.json({
             "status":"failed",
             "message":"all field required"
           })
@@ -219,7 +225,6 @@ class realChatController {
       const conversationId =req.params.conversationId;
 
       const messages = await usersMessages.find({conversationId});
-       
        const userMessageData =Promise.all(messages.map(async(message) => {
             if(message.conversationId === conversationId){
               const senderId = message.senderId;
@@ -235,7 +240,9 @@ class realChatController {
                                   phone:users.phone,
                                   gender:users.gender,
                                 },
-                                  messages:message.message
+                                messages:message.message,
+                                createdTime:message.createdAt,
+                                updateTime:message.updatedAt
                                 }
                           
                         return  messagesData;

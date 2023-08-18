@@ -8,8 +8,10 @@ const Dashboard = () => {
     JSON.parse(localStorage.getItem("user:details"))
   );
   const [userConversation, setUserConversation] = useState([]);
-  const [messages, setMessages] = useState([]);
+  const [messages, setMessages] = useState({});
   const [allUser, setAllUser] = useState([]);
+  const [chatMessage, setchatMessage] = useState()
+  const [getConversationId, setGetConversationId] = useState();
 
   useEffect(() => {
     try {
@@ -27,15 +29,15 @@ const Dashboard = () => {
         );
         let Conversation = await getResponse.json();
         setUserConversation(Conversation);
-        console.log(Conversation)
       };
       getConversation();
     } catch (error) {
       console.log(error);
     }
   }, []);
-
-  let fetchMessages = async (conversationId) => {
+  
+  let fetchMessages = async (conversationId, recieverUser) => {
+    setGetConversationId(conversationId);
     let responseMessage = await fetch(
       `http://localhost:8000/api/user/message/${conversationId}`,
       {
@@ -46,9 +48,12 @@ const Dashboard = () => {
       }
     );
     let messagesdata = await responseMessage.json();
-    setMessages(messagesdata);
-    console.log( messagesdata)
+    setMessages({messages:messagesdata, recieverUser:recieverUser});
+
   };
+useEffect(()=>{
+  fetchMessages()
+}, [])
 
   useEffect(() => {
     let fetchUsers = async () => {
@@ -67,6 +72,30 @@ const Dashboard = () => {
 
     fetchUsers();
   }, []);
+  let handleChatMessages=async(event)=> {
+    setchatMessage(event.target.value);
+  }
+
+  let sendChatMessages = async(event) => {
+    event.preventDefault();
+
+    let sendChat = await fetch("http://localhost:8000/api/user/message", {
+      method:'POST',
+      headers:{
+        "Content-Type":"application/json",
+      },
+      body:JSON.stringify({
+        conversationId:getConversationId ? getConversationId : 'new',
+        senderId:user._id,
+        recieverId:messages.recieverUser,
+        message:chatMessage
+      })
+
+    })
+    let newChat = await sendChat.json();
+    setchatMessage('')
+  }
+ 
   return (
     <div className="w-screen flex">
       <div className="w-[25%]  border border-[#010b27] text-white text-white-500">
@@ -82,7 +111,7 @@ const Dashboard = () => {
                 <div key={ idx }>
                   <div
                     className="bg-[#172533] text-justify flex items-center p-2"
-                    onClick={() => fetchMessages(userData.conversationId)}
+                    onClick={() => fetchMessages(userData.conversationId, userData.user.userId)}
                   >
                     <div>
                       <img
@@ -93,12 +122,12 @@ const Dashboard = () => {
                     </div>
                     <div className="relative right-[40%] ">
                       <span className=" cursor-pointer">
-                        
+                      {userData.user.fullName}
                       </span>
                       <br />
                       <span className=" "></span>
                       <br />
-                      <span className=" "> </span>
+                      <span className=" ">{userData.user.age} </span>
                       <br />
                       <span className=" "> online </span>
                     </div>
@@ -136,7 +165,12 @@ const Dashboard = () => {
           <div className="bg-[#01162b] rounded-full m-5 p-2 mb-5">
             <UsersProfile
               mainClass={"ml-6 flex"}
-              user={"User Name"}
+              user={allUser ? allUser.map((reciever, idx) =>{
+
+                    if(reciever._id === messages.recieverUser){
+                      return(reciever.fullName)
+                    }
+              }):''}
               pClass={"text-justify ml-5"}
               status={"online"}
               spanClass={" p-1  ml-auto mr-6 "}
@@ -163,51 +197,55 @@ const Dashboard = () => {
         </div>
         <div>
           <div className="h-screen border border-[#010b27] w-full overflow-x-auto overflow-y-auto">
-            {messages ? 
-            messages.map(({msg, user:{id}={}, index}) => {
-                if(msg.user.userId){
+            {messages.messages ? 
+            messages.messages.map((msg, index) => {
+                if(msg.user.userId  === user._id){
                   return (
-                      <div className="mt-1 mb-1 text-justify text-white max-w-[45%] p-4" key={index}>
+                      <div className="mt-1 mb-1 text-justify text-white max-w-[45%] p-4" key={[index]}>
                         <p className="text-justify text-[12px] text-[#a3020a] shadow p-[1px] bg-[#132435] w-fit p-1 mb-2 rounded-full">
                           {msg.user.fullName}
                         </p>
                         <p className="break-words text-justify text-[12px] bg-[#132435] p-1 w-fit rounded-tr-xl rounded-bl-xl rounded-br rounded-br-lg">
-                          { msg.messages} {id} 
+                          { msg.messages}  
                         </p>
                         <p className="cursor-not-allowed text-center text-[#a3020a] text-[10px] bg-[#132435] w-fit p-1 mt-2 rounded-full ">
-                          senderTime
+                         {msg.createdTime}
                         </p>
                       </div>
                   )
-                }else{
+                }
+                else{
                   return(
-                
-                    <div className="mt-1 mb-1 text-black text-justify max-w-[45%] ml-auto">
+                    <div className="mt-1 mb-1 text-black text-justify max-w-[45%] ml-auto" key={[index]}>
                       <p className="text-justify text-[12px] text-[#a3020a] shadow bg-[#132435] w-fit p-1 mb-2 rounded-full">
-                        reciever
+                        {msg.user.fullName}
                       </p>
                       <p className="text-justify text-[12px] bg-[#3194f8] h-auto break-words w-fit p-[4px]  rounded-tl-xl rounded-bl-xl rounded-br rounded-br-xl">
-                        Hey dear .....
+                        {msg.messages}
                       </p>
                       <p className="cursor-not-allowed text-center text-[#a3020a] text-[10px] bg-[#132435] w-fit p-1 mt-2 rounded-full">
-                        recieverTime
+                        {msg.createdTime}
                       </p>
                     </div>
+
                 )}
-            }): <div className="text-white-500">No Conversation </div> }
+            }): <div className="text-white-500">No Conversation </div> }  
           </div>
         </div>
         <div className="relative">
           <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none"></div>
+        
           <input
-            type="search"
+            type="text"
             id="search"
             className="static block m-auto w-[70%] p-4 pl-5 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 h-[45px]"
             placeholder="Type message........"
+            onChange={handleChatMessages}
           />
           <button
             type="submit"
             className="static text-white absolute right-20 bottom-1  hover:bg-[#01162b]-800 focus:ring-4 focus:outline-none focus:ring-[#01162b]-300 font-lg rounded-lg text-sm px-4 py-2 dark:bg-[#01162b]-600 dark:hover:bg-[#01162b]-700 dark:focus:ring-[#01162b]-800 h-auto"
+            onClick={sendChatMessages}
           >
             <svg
               className="rotate-90 w-6 h-6 text-gray-800 dark:text-white"
@@ -235,12 +273,12 @@ const Dashboard = () => {
         <hr />
         <div className="h-screen mr-3 overflow-y-auto">
           {allUser ? (
-            allUser.map((user, idx) => {
+            allUser.map((userlist, idx) => {
+              if(userlist._id !== user._id)
               return (
                 <div key={idx}>
                   <div
-                    className="flex items-center bg-[#070522] text-justify m-5 p-1"
-                  >
+                    className="flex items-center bg-[#070522] text-justify m-5 p-1">
                     <div>
                       <img
                         className="cursor-pointer rounded-full border borde-gray-light "
@@ -252,7 +290,7 @@ const Dashboard = () => {
                     </div>
                     <div className="">
                       <p className="ml-[6px] cursor-pointer text-[12px]">
-                        {user.fullName}
+                        {userlist.fullName}
                       </p>
                       <p className="ml-[6px] text-[12px]">online</p>
                     </div>
