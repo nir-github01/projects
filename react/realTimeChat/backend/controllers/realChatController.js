@@ -201,14 +201,14 @@ class realChatController {
            let newConversation = new ConvoModel({members:[senderId, recieverId]});
             let newConversations = await newConversation.save();
             console.log(newConversations)
-            return res.send(newConversations)
-            // console.log(req.body)
-            // if(message){
-            //     const newMessages =new usersMessages({conversationId:newConversation._id, senderId, message, recieverId});
-            //     const messageData = await newMessages.save();
-            //     console.log(messageData)
-            //   return res.status(200).json(messageData)
-            // }
+            // return res.send(newConversations)
+            console.log(req.body)
+            if(message){
+                const newMessages =new usersMessages({conversationId:newConversation._id, senderId, message, recieverId});
+                const messageData = await newMessages.save();
+                console.log(messageData)
+              return res.status(200).json(messageData)
+            }
         }else{
          return res.json({
             "status":"failed",

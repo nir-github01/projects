@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import ProfileImage from "../../components/ProfileImage";
 import UsersProfile from "../../components/UsersProfile";
-// import Chating from "../../components/Chating";
+import {io} from 'socket.io-client';
 
 const Dashboard = () => {
   const [user, setUser] = useState(
@@ -12,7 +12,28 @@ const Dashboard = () => {
   const [allUser, setAllUser] = useState([]);
   const [chatMessage, setchatMessage] = useState()
   const [getConversationId, setGetConversationId] = useState();
+  
+  const [socket, setSocket] = useState(null);
 
+  useEffect(() => {
+    setSocket(io("http://localhost:8080"))
+  }, []);
+
+  useEffect(()=> {
+      socket?.emit('addUser', user._id);
+      socket?.on('getUsers', (users)=>{
+        console.log( users)
+      });
+      socket?.on('getMessages', (data)=>{
+           console.log( data )
+           setMessages((prev) => ({
+            ...prev,
+            messages:[ ...prev.messages, {user:data.user, messages:data.message, createdTime:data.time} ]
+             
+           }))
+          
+      })
+  }, [socket])
   useEffect(() => {
     try {
       let loggedInUser = JSON.parse(localStorage.getItem("user:details"));
@@ -29,13 +50,14 @@ const Dashboard = () => {
         );
         let Conversation = await getResponse.json();
         setUserConversation(Conversation);
+
       };
       getConversation();
     } catch (error) {
       console.log(error);
     }
   }, []);
-  
+
   let fetchMessages = async (conversationId, recieverUser) => {
     setGetConversationId(conversationId);
     let responseMessage = await fetch(
@@ -50,11 +72,9 @@ const Dashboard = () => {
     let messagesdata = await responseMessage.json();
     setMessages({messages:messagesdata, recieverUser:recieverUser});
 
-  };
-useEffect(()=>{
-  fetchMessages()
-}, [])
+    // console.log(conversationId, recieverUser)
 
+  };
   useEffect(() => {
     let fetchUsers = async () => {
       let response = await fetch(
@@ -78,7 +98,12 @@ useEffect(()=>{
 
   let sendChatMessages = async(event) => {
     event.preventDefault();
-
+     socket.emit('sendMessages', {
+      senderId:user._id,
+      conversationId:messages.messages.conversationId,
+      message:chatMessage,
+      recieverId:messages.recieverUser,
+     })
     let sendChat = await fetch("http://localhost:8000/api/user/message", {
       method:'POST',
       headers:{
@@ -95,7 +120,6 @@ useEffect(()=>{
     let newChat = await sendChat.json();
     setchatMessage('')
   }
- 
   return (
     <div className="w-screen flex">
       <div className="w-[25%]  border border-[#010b27] text-white text-white-500">
@@ -199,7 +223,10 @@ useEffect(()=>{
           <div className="h-screen border border-[#010b27] w-full overflow-x-auto overflow-y-auto">
             {messages.messages ? 
             messages.messages.map((msg, index) => {
-                if(msg.user.userId  === user._id){
+              console.log("senderId  >>>"+ msg.user.userId)
+              console.log("userId >>" + user._id)
+              console.log("messages >>>" +  msg.messages)
+                if(msg.user.userId  === user._id ){
                   return (
                       <div className="mt-1 mb-1 text-justify text-white max-w-[45%] p-4" key={[index]}>
                         <p className="text-justify text-[12px] text-[#a3020a] shadow p-[1px] bg-[#132435] w-fit p-1 mb-2 rounded-full">
@@ -277,8 +304,11 @@ useEffect(()=>{
               if(userlist._id !== user._id)
               return (
                 <div key={idx}>
+                
                   <div
-                    className="flex items-center bg-[#070522] text-justify m-5 p-1">
+                    className="flex items-center bg-[#070522] text-justify m-5 p-1"
+                     onClick={()=>fetchMessages()}
+                     >
                     <div>
                       <img
                         className="cursor-pointer rounded-full border borde-gray-light "
