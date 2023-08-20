@@ -31,10 +31,10 @@ io.on("connection", (socket) => {
 
     socket.on("addUser", async(userId) => {
        let isUserExist = users.find(user=> user.userId ===userId)
-       console.log(isUserExist)
+      //  console.log(isUserExist)
        if(!isUserExist){
          const user = {userId, socketId:socket.id};
-         console.log( user)
+         // console.log( user)
          users.push(user)
          io.emit('getUsers', users)
        }
@@ -48,7 +48,7 @@ io.on("connection", (socket) => {
       let date = today.getFullYear() +" / "+today.getMonth()+" / "+today.getDate();
       let time = today.getHours()+":"+today.getMinutes()+":"+today.getSeconds();
 
-      let userdata = await usersModel.findById(sender.userId);
+      let userdata = await usersModel.findById(senderId);
       let user = {
             userId:userdata._id,
             fullName:userdata.fullName, 
@@ -58,7 +58,17 @@ io.on("connection", (socket) => {
             gender:userdata.gender
          }
       if(reciever){
-         io.to(reciever.socketId).emit('getMessages', {
+         io.to(reciever.socketId).to(sender.socketId).emit('getMessages', {
+            senderId,
+            recieverId,
+            conversationId,
+            message,
+            user,
+            date,
+            time
+         })
+      }else{
+         io.to(sender.socketId).emit('getMessages', {
             senderId,
             recieverId,
             conversationId,

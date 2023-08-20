@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import ProfileImage from "../../components/ProfileImage";
 import UsersProfile from "../../components/UsersProfile";
 import {io} from 'socket.io-client';
@@ -15,6 +15,8 @@ const Dashboard = () => {
   
   const [socket, setSocket] = useState(null);
 
+  const messageRef = useRef(null);
+
   useEffect(() => {
     setSocket(io("http://localhost:8080"))
   }, []);
@@ -25,7 +27,6 @@ const Dashboard = () => {
         console.log( users)
       });
       socket?.on('getMessages', (data)=>{
-           console.log( data )
            setMessages((prev) => ({
             ...prev,
             messages:[ ...prev.messages, {user:data.user, messages:data.message, createdTime:data.time} ]
@@ -120,6 +121,10 @@ const Dashboard = () => {
     let newChat = await sendChat.json();
     setchatMessage('')
   }
+
+  useEffect(()=> {
+      messageRef.current?.scrollIntoView({behavior:'smooth'});
+  }, [messages?.messages])
   return (
     <div className="w-screen flex">
       <div className="w-[25%]  border border-[#010b27] text-white text-white-500">
@@ -223,15 +228,13 @@ const Dashboard = () => {
           <div className="h-screen border border-[#010b27] w-full overflow-x-auto overflow-y-auto">
             {messages.messages ? 
             messages.messages.map((msg, index) => {
-              console.log("senderId  >>>"+ msg.user.userId)
-              console.log("userId >>" + user._id)
-              console.log("messages >>>" +  msg.messages)
                 if(msg.user.userId  === user._id ){
                   return (
+                    <div>
                       <div className="mt-1 mb-1 text-justify text-white max-w-[45%] p-4" key={[index]}>
-                        <p className="text-justify text-[12px] text-[#a3020a] shadow p-[1px] bg-[#132435] w-fit p-1 mb-2 rounded-full">
+                        {/* <p className="text-justify text-[12px] text-[#a3020a] shadow p-[1px] bg-[#132435] w-fit p-1 mb-2 rounded-full">
                           {msg.user.fullName}
-                        </p>
+                        </p> */}
                         <p className="break-words text-justify text-[12px] bg-[#132435] p-1 w-fit rounded-tr-xl rounded-bl-xl rounded-br rounded-br-lg">
                           { msg.messages}  
                         </p>
@@ -239,20 +242,25 @@ const Dashboard = () => {
                          {msg.createdTime}
                         </p>
                       </div>
+                      <div ref={messageRef} />
+                      </div>
                   )
                 }
                 else{
                   return(
+                    <div>
                     <div className="mt-1 mb-1 text-black text-justify max-w-[45%] ml-auto" key={[index]}>
-                      <p className="text-justify text-[12px] text-[#a3020a] shadow bg-[#132435] w-fit p-1 mb-2 rounded-full">
+                      {/* <p className="text-justify text-[12px] text-[#a3020a] shadow bg-[#132435] w-fit p-1 mb-2 rounded-full">
                         {msg.user.fullName}
-                      </p>
+                      </p> */}
                       <p className="text-justify text-[12px] bg-[#3194f8] h-auto break-words w-fit p-[4px]  rounded-tl-xl rounded-bl-xl rounded-br rounded-br-xl">
                         {msg.messages}
                       </p>
                       <p className="cursor-not-allowed text-center text-[#a3020a] text-[10px] bg-[#132435] w-fit p-1 mt-2 rounded-full">
                         {msg.createdTime}
                       </p>
+                    </div>
+                    <div ref={messageRef} />
                     </div>
 
                 )}
