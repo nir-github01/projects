@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import ProfileImage from "../../components/ProfileImage";
 import UsersProfile from "../../components/UsersProfile";
-import {io} from 'socket.io-client';
+import {connect, io} from 'socket.io-client';
 
 const Dashboard = () => {
   const [user, setUser] = useState(
@@ -12,10 +12,13 @@ const Dashboard = () => {
   const [allUser, setAllUser] = useState([]);
   const [chatMessage, setchatMessage] = useState()
   const [getConversationId, setGetConversationId] = useState();
+  const [status, setStatus] = useState([])
   
   const [socket, setSocket] = useState(null);
 
   const messageRef = useRef(null);
+  
+  console.log(status)
 
   useEffect(() => {
     setSocket(io("http://localhost:8080"))
@@ -23,14 +26,14 @@ const Dashboard = () => {
 
   useEffect(()=> {
       socket?.emit('addUser', user._id);
-      socket?.on('getUsers', (users)=>{
-        console.log( users)
+    socket?.on('getUsers', (users)=>{
+         setStatus(users)
       });
+    
       socket?.on('getMessages', (data)=>{
            setMessages((prev) => ({
             ...prev,
-            messages:[ ...prev.messages, {user:data.user, messages:data.message, createdTime:data.time} ]
-             
+            messages:[ ...prev.messages, {user:data.user, messages:data.message, createdTime:data.time} ] 
            }))
           
       })
@@ -61,6 +64,7 @@ const Dashboard = () => {
 
   let fetchMessages = async (conversationId, recieverUser) => {
     setGetConversationId(conversationId);
+
     let responseMessage = await fetch(
       `http://localhost:8000/api/user/message/${conversationId}`,
       {
@@ -230,7 +234,7 @@ const Dashboard = () => {
             messages.messages.map((msg, index) => {
                 if(msg.user.userId  === user._id ){
                   return (
-                    <div>
+                  
                       <div className="mt-1 mb-1 text-justify text-white max-w-[45%] p-4" key={[index]}>
                         {/* <p className="text-justify text-[12px] text-[#a3020a] shadow p-[1px] bg-[#132435] w-fit p-1 mb-2 rounded-full">
                           {msg.user.fullName}
@@ -241,14 +245,14 @@ const Dashboard = () => {
                         <p className="cursor-not-allowed text-center text-[#a3020a] text-[10px] bg-[#132435] w-fit p-1 mt-2 rounded-full ">
                          {msg.createdTime}
                         </p>
+                        <div ref={messageRef} />
                       </div>
-                      <div ref={messageRef} />
-                      </div>
+                      
+                   
                   )
                 }
                 else{
                   return(
-                    <div>
                     <div className="mt-1 mb-1 text-black text-justify max-w-[45%] ml-auto" key={[index]}>
                       {/* <p className="text-justify text-[12px] text-[#a3020a] shadow bg-[#132435] w-fit p-1 mb-2 rounded-full">
                         {msg.user.fullName}
@@ -259,9 +263,9 @@ const Dashboard = () => {
                       <p className="cursor-not-allowed text-center text-[#a3020a] text-[10px] bg-[#132435] w-fit p-1 mt-2 rounded-full">
                         {msg.createdTime}
                       </p>
+                      <div ref={messageRef} />
                     </div>
-                    <div ref={messageRef} />
-                    </div>
+              
 
                 )}
             }): <div className="text-white-500">No Conversation </div> }  
