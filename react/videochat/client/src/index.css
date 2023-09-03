@@ -11,11 +11,20 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
-.container {
-  position: absolute;
-  left: 30%;
+.mainContainer, .loginContainer{
+  margin: 0px;
+  color: rgb(88, 51, 9);
+  background-color: rgb(3, 20, 36);
+  height: 700px;
+  padding: 20px;
 }
-.loginContainer{
+.container, .loginbox {
+  width: max-content;
+  padding:20px 30px;
+  background-color: rgb(247, 255, 255);
   position: absolute;
-  left: 40%;
+  left: 35%;
+  border: 1px solid gray;
+  border-radius: 2vh;
 }
+
