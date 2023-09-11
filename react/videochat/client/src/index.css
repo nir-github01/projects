@@ -27,4 +27,16 @@ code {
   border: 1px solid gray;
   border-radius: 2vh;
 }
+.leftBox{
+  width: 25%;
+  border: 1px solid greenyellow;
+}
+.centerBox{
+  width: 50%;
+  border: 1px solid greenyellow;
+}
+.rightBox{
+  width: 25%;
+  border: 1px solid greenyellow;
+}
 
