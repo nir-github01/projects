@@ -6,7 +6,6 @@ export default class MainChat extends Component {
       <div>
         <div className='mainBox'>
           <div className="leftBox">
-
           </div>
           <div className="centerBox"></div>
           <div className="rightBox"></div>
