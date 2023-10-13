@@ -39,4 +39,52 @@ code {
   width: 25%;
   border: 1px solid greenyellow;
 }
+.trackingBox{
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: space-around;
+  align-content: space-around;
+  margin: 30px;
+}
+.step1Box{
+  width: max-content;
+  height: max-content;
+  padding:10px 5px;
+  border-radius: 50%;
+  z-index: 10;
+  border: 2px solid red;
+}
+.step2Box{
+  width: max-content;
+  height: max-content;
+  padding:10px 5px;
+  border-radius: 50%;
+  z-index: 10;
+  border: 2px solid red;
+}
+.step3Box{
+  width: max-content;
+  height: max-content;
+  padding:10px 5px;
+  border-radius: 50%;
+  z-index: 10;
+  border: 2px solid red;
+}
+.line1{
+  width: 25%;
+  position: absolute;
+  left:20%;
+  top: 8%;
+  border: 4px solid green;
+}
+.line2{
+  width: 24%;
+  position: absolute;
+  float: right;
+  right: 24.5%;
+  top: 7.7%;
+  border: 4px solid rgb(49, 0, 128);
+}
+
 

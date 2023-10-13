@@ -12,7 +12,7 @@ let  usersignUpSchema =new  mongoose.Schema({
 
 },{timestamps:true});
 
-const usersSignUp = mongoose.model("usersSignUp", usersignUpSchema);
+const usersModel = mongoose.model("usersModel", usersignUpSchema);
 
-export default usersSignUp;
+export default usersModel;
 
