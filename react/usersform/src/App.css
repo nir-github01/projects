@@ -1,0 +1,14 @@
+
+.container{
+  height: 100vh;
+  margin: 0;
+  padding: 4px;
+  border:2px solid gray;
+  background: linear-gradient(to right, rgb(93, 230, 177) , rgb(10, 110, 89) );
+}
+
+.box{
+  margin: 0 30%;
+  border:2px solid green;
+  background: linear-gradient(to top, rgb(138, 75, 3), rgb(214, 156, 68));
+}
