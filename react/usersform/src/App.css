@@ -1,22 +1,423 @@
-
-.container{
+.container {
   height: 120vh;
   margin: 0;
   padding: 4px;
   background: linear-gradient(to bottom, rgb(130, 16, 206), rgb(214, 68, 117));
 }
 
-.box{
+.box {
   margin: 0 30%;
   border-radius: 2vh;
   padding: 5px;
   box-shadow: 4px 4px 4px 4px rgb(154, 81, 238);
-  background: linear-gradient(to top, rgb(182, 238, 216) , rgb(240, 189, 80) );
+  background: linear-gradient(to top, rgb(182, 238, 216), rgb(240, 189, 80));
 }
-.loginBox{
+
+.loginBox {
   margin: 10% 30%;
   border-radius: 4vh;
   padding: 5px;
   box-shadow: 4px 4px 4px 4px rgb(154, 81, 238);
-  background: linear-gradient(to top, rgb(182, 238, 216) , rgb(240, 189, 80) );
+  background: linear-gradient(to top, rgb(182, 238, 216), rgb(240, 189, 80));
+}
+
+.leftBox {
+  width: 25%;
+  margin: 40px 20px 15px 30px;
+  height: 110vh;
+}
+
+.leftHeader {
+  width: 260px;
+  height: 60px;
+  background: #FFFFFF 0% 0% no-repeat padding-box;
+  border-radius: 10px;
+  opacity: 1;
+  margin-bottom: 15px;
+  box-shadow: 4px 4px 4px solid white;
+}
+
+#logoId {
+  position: relative;
+  left: 15%;
+  font-size: 32px;
+  text-align: center;
+  padding: 2px;
+  color: #101010;
+}
+
+.leftSection {
+  width: 260px;
+  height: 707px;
+  background: #FFFFFF 0% 0% no-repeat padding-box;
+  border-radius: 10px;
+  opacity: 1;
+  margin: 10px 10px 15px 30px;
+  padding: 2px;
+}
+
+.navBox:first-child {
+  color: #101010;
+  font-size: 16px;
+  font-weight: 600;
+  gap: 15px;
+  padding: 5px;
+  display: flex;
+  align-items: center;
+}
+
+.navBox {
+  color: #8D8D8D;
+  font-size: 16px;
+  gap: 15px;
+  padding: 5px;
+  display: flex;
+  align-items: center;
+}
+
+.leftFooter {
+
+  margin-top: 30%;
+  margin-bottom: 20%;
+  gap: 15px;
+  padding: 5px;
+  display: flex;
+  align-items: center;
+  color: var(--unnamed-color-88c2bb);
+  text-align: left;
+  font: normal normal 600 16px/19px Gilroy;
+  letter-spacing: 0px;
+  color: #88C2BB;
+  opacity: 1;
+}
+
+.leftbottom {
+  display: flex;
+  align-items: center;
+  top: 873px;
+  left: 330px;
+  width: 126px;
+  height: 12px;
+  text-align: right;
+  font: normal normal 600 10px/12px Gilroy;
+  letter-spacing: 0px;
+  color: #8D8D8D;
+  opacity: 1;
+}
+
+.midBox {
+  width: 50%;
+  background: #FFFFFF 0% 0% no-repeat padding-box;
+  border-radius: 10px;
+  opacity: 1;
+}
+
+.midHeader {
+  margin: 40px 15px 15px 15px;
+  padding: 4px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  align-content: center;
+  box-shadow: 1px 2px 3px #FFFFFF;
+  background: #FFFFFF 0% 0% no-repeat padding-box;
+  border-radius: 10px;
+  opacity: 1;
+}
+
+.searchBox {
+  box-shadow: 1px 2px 3px #FFFFFF;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  align-content: center;
+  align-items: center;
+}
+
+.searchIconImg {
+  position: relative;
+  right: 85px;
+  top: 15px;
+  z-index: 10;
+  padding: 2px;
+}
+
+.searchIpt {
+  position: relative;
+  bottom: 12px;
+  left: 0px;
+  border: 1px solid lightgray;
+  width: 95%;
+  height: 10%;
+  border-radius: 2vh;
+  outline: none;
+  background: white;
+  display: block;
+  padding: 3px 2px 3px 30px;
+  text-align: left;
+  font: normal normal medium 12px/14px Gilroy;
+  letter-spacing: 0px;
+  color: #9A9A9E;
+  opacity: 1;
+  box-shadow: 2px 2px 2px solid white;
+}
+
+.searchIpt:focus-visible {
+  border-color: lightgray !important;
+  outline-color: lightgrey !important;
+  outline: none;
+}
+
+.searchIpt:focus {
+  border-color: lightgray !important;
+  outline-color: lightgrey !important;
+  outline: none;
+}
+
+.filterBox {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  margin-right: 10px;
+  font-size: 14px;
+}
+
+.sectionBox {
+  min-height: 100vh;
+  height: 110vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.sectionContainer {
+  margin: 15px 5px;
+  height: max-content;
+}
+
+.createrImg {
+  width: 48px;
+  height: 48px;
+}
+
+.sectionTopBox {
+  display: grid;
+  grid-template-columns: 1fr 5fr 1fr;
+  gap: 5px;
+  margin: 15px 0px 15px 0px;
+}
+
+.divmenuBox {
+  margin: 15px 0px 0px 30px;
+}
+
+.divmenuBox span div {
+  width: 1.5px;
+  height: 1.5px;
+  padding: 1.5px;
+  margin: 2px;
+  background-color: rgb(51, 49, 49);
+  /* color: black; */
+}
+
+.nameDiv span {
+  font-size: 20px;
+}
+
+.nameDiv p {
+  font-size: 14px;
+}
+
+.titleBox {
+  margin: 15px 0px 15px 0px;
+  text-align: left;
+  font-size: 14px;
+  font: normal normal medium 14px/21px Gilroy;
+  letter-spacing: 0px;
+  opacity: 1;
+}
+
+#postImage {
+  width: 560px;
+  height: 306px;
+  background: transparent;
+  border-radius: 10px;
+  opacity: 0.9;
+}
+
+.heartIconImage {
+  position: relative;
+  bottom: 280px;
+  left: 354px;
+  width: 24px;
+  height: 22px;
+}
+
+.likedivclass,
+.commentdivclass,
+.sharedivClass {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5px;
+  margin: 10px;
+  text-align: left;
+  font-size: 14px;
+}
+
+#likeIconId {
+  width: 24px;
+  height: 22px;
+}
+
+#commentIconId {
+  width: 22px;
+  height: 22px;
+}
+
+#shareIconId {
+  width: 20px;
+  height: 18px;
+}
+
+.sectionFooter {
+  position: absolute;
+  padding: 5px;
+  left: 20%;
+  min-width: 50%;
+  min-height: 250px;
+  height: 300px;
+  width: 60%;
+  z-index: 5;
+  display: flex;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+.cardImg {
+  min-width: 255px;
+  width: max-content;
+  height: 240px;
+}
+
+#imgListId {
+  border-radius: 2vh;
+  padding: 5px;
+  width: 252px;
+  height: 180px;
+}
+
+.rightBox {
+  width: 25%;
+  margin: 40px 15px 30px 15px;
+  height: 110vh;
+}
+
+.btnclass {
+  width: 260px;
+  height: 80px;
+  background: linear-gradient(to right, #88c2bb, rgb(30, 91, 206));
+  border-radius: 1vh;
+  font-size: 16px;
+  padding: 2px;
+  color: #FFFFFF;
+}
+
+.rightTop {
+  text-align: left;
+  font: normal normal 600 16px/19px Gilroy;
+  letter-spacing: 0px;
+  opacity: 1;
+  padding: 10px;
+  margin: 10px;
+
+}
+
+.rightMid {
+  height: 100vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+#titleId {
+  margin-left: 30px;
+  color: #8D8D8D;
+
+}
+
+.artistBoxclass {
+  margin-top: 0;
+  height: 148px !important;
+
+}
+
+.artistImgclass {
+  margin: 0px;
+  padding: 2px;
+  border-radius: 1vh;
+  width: 244px;
+  height: 126px;
+}
+
+.dotdivclass {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  border: 4px solid rgb(5, 135, 187);
+  position: relative;
+  left: 40px;
+  top: 10px;
+}
+
+.photographerImg {
+  width: 48px;
+  height: 48px;
+}
+
+.artistCardimgdiv {
+  position: relative;
+  bottom: 70px;
+  left: 10px;
+}
+
+.artistNameclass {
+  position: relative;
+  bottom: 110px;
+  left: 70px;
+  padding: 2px;
+  color: #FFFFFF;
+
+}
+
+div.artistNameclass span {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+div.artistNameclass p {
+  font-size: 14px;
+}
+
+.cardcaption p {
+  text-align: left;
+  font-size: 13px;
+  margin-left: 3px;
+  padding: 5px;
+}
+
+#priceSpanId {
+  margin-left: 4px;
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.pricedivclass {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.ratingIconspan {
+  margin-top: 5px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  align-items: center;
+  gap: 0px;
 }
