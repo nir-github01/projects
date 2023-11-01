@@ -1,9 +1,10 @@
-import React from 'react'
+import NavBars from '../components/Navbars.js';
 
 function Home({userName}) {
+
   return (
-    <div>
-      <h1>Welcome {  userName ? userName : "" }</h1>
+    <div className='homeContainer'>
+      <NavBars />
     </div>
   )
 }

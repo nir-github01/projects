@@ -19,7 +19,6 @@ function CheckBox({ termsConditions, label, onChange, name }) {
         >
           {label}{" "}
           <a
-            href="#"
             className="text-blue-600 dark:text-blue-500 hover:underline"
           >
             {termsConditions}

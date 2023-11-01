@@ -1,14 +1,22 @@
 
 .container{
-  height: 100vh;
+  height: 120vh;
   margin: 0;
   padding: 4px;
-  border:2px solid gray;
-  background: linear-gradient(to right, rgb(93, 230, 177) , rgb(10, 110, 89) );
+  background: linear-gradient(to bottom, rgb(130, 16, 206), rgb(214, 68, 117));
 }
 
 .box{
   margin: 0 30%;
-  border:2px solid green;
-  background: linear-gradient(to top, rgb(138, 75, 3), rgb(214, 156, 68));
+  border-radius: 2vh;
+  padding: 5px;
+  box-shadow: 4px 4px 4px 4px rgb(154, 81, 238);
+  background: linear-gradient(to top, rgb(182, 238, 216) , rgb(240, 189, 80) );
+}
+.loginBox{
+  margin: 10% 30%;
+  border-radius: 4vh;
+  padding: 5px;
+  box-shadow: 4px 4px 4px 4px rgb(154, 81, 238);
+  background: linear-gradient(to top, rgb(182, 238, 216) , rgb(240, 189, 80) );
 }
